@@ -94,4 +94,7 @@ ENV/
 # Django
 okayshop/settings.py
 local_settings.py
-db.sqlite3
+
+# Dev
+assets
+Thumbs.db
