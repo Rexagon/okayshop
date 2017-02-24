@@ -1,0 +1,106 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static "favicon.ico" %}" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ivan Kalinin">
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-select.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/template.css" %}?r={% now "U" %}">
+	{% block styles %}{% endblock %}
+
+	<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="top-header hidden-xs">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="list-inline pull-left">
+                        <li><a><i class="fa fa-phone"></i> {{ parameters.phone }}</a></li>
+                        <li><a href="mailto:{{ parameters.email }}"><i class="fa fa-envelope"></i> {{ parameters.email }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="middle-header">
+        <div class="container">
+            <div class="row">
+                <a href="/" class="logo">
+                    <img src="/static/media/{{ parameters.logo }}">
+                </a>
+                <span class="site-title">
+                    {{ parameters.title }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <nav class="navbar navbar-default shadow-navbar" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-navbar">
+                        <span class="sr-only">Меню</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="menu-navbar">
+                    <ul class="nav navbar-nav">
+                        <li{% if page == "main" %} class="active"{% endif %}><a href="{% url "main" %}">Главная</a></li>
+                        <li{% if page == "products" %} class="active"{% endif %}><a href="{% url "products" %}">Продукция</a></li>
+                        <li{% if page == "services" %} class="active"{% endif %}><a href="{% url "services" %}">Услуги</a></li>
+                        <li{% if page == "delivery" %} class="active"{% endif %}><a href="{% url "delivery" %}">Доставка</a></li>
+                        <li{% if page == "checkout" %} class="active"{% endif %}><a href="{% url "checkout" %}">Заказ</a></li>
+                        <li{% if page == "contacts" %} class="active"{% endif %}><a href="{% url "contacts" %}">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <div class="footer">
+        <div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="title-footer"><span>О нас</span></div>
+					<ul>
+						<li>{{ parameters.about }}</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<div class="title-footer"><span>Контакты</span></div>
+                    <ul>
+                        <li><span><i class="fa fa-phone"></i></span> {{ parameters.phone }}</li>
+                        <li><span><i class="fa fa-envelope"></i></span> <a href="mailto:{{ parameters.email }}">{{ parameters.email }}</a></li>
+                    </ul>
+				</div>
+			</div>
+			<br>
+		</div>
+		<div class="text-center copyright">
+			&copy;2017 aluminiumcomposite.ru
+		</div>
+	</div>
+
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/bootstrap-select.min.js" %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

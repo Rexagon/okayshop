@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% load staticfiles %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="title"><span>Задайте нам вопрос</span></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="title"><span>Контакты</span></div>
+
+                    <h4>Мы всегда рады ответить на Ваши вопросы</h4>
+                    <ul>
+                        <li><b><i class="fa fa-phone"></i> Москва:</b> +7 (495) 649-98-19</li>
+                        <li><b><i class="fa fa-phone"></i> Бесплатная линия:</b> {{ parameters.phone }}</li>
+                        <li><b><i class="fa fa-envelope"></i> Почта:</b> {{ parameters.email }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
