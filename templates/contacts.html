@@ -9,6 +9,26 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="title"><span>Задайте нам вопрос</span></div>
+
+                    <form>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Ваше имя</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Ваш E-mail</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="message">Сообщение</label>
+                                <textarea maxlength="5000" data-msg-required="Please enter your message." rows="10" class="form-control" name="message" id="message"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-theme btn-lg">Отправить</button>
+                    </form>
                 </div>
                 <div class="col-md-6">
                     <div class="title"><span>Контакты</span></div>
@@ -19,6 +39,12 @@
                         <li><b><i class="fa fa-phone"></i> Бесплатная линия:</b> {{ parameters.phone }}</li>
                         <li><b><i class="fa fa-envelope"></i> Почта:</b> {{ parameters.email }}</li>
                     </ul>
+                    <hr>
+                    <h4>Часы работы наших специалистов</h4>
+                    <b>Понедельник – Пятница</b> — с 10 до 18<br>
+                    <b>Суббота, воскресенье</b> — Выходные
+                    <hr>
+                    <h4>Заказы через сайт принимаются круглосуточно.</h4>
                 </div>
             </div>
         </div>
