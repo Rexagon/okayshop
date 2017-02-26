@@ -377,13 +377,13 @@ body {
 
 .home-slider .item {
 	height: 255px;
-	width: 100%;
+	width: 100vw;
     overflow: hidden;
 }
 
 .home-slider .item img {
     z-index: -1;
-    position: absolute;
+    /*position: absolute;*/
     margin: auto;
     min-height: 100%;
     min-width: 100%;
