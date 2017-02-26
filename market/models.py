@@ -46,15 +46,37 @@ class SliderImage(models.Model):
 class CompositeType(models.Model):
     name = models.CharField(max_length=128, verbose_name="Название")
     logo = models.ImageField(verbose_name="Логотип")
+    short_description = models.TextField(verbose_name="Краткое описание")
+    full_description = models.TextField(verbose_name="Описание")
 
     def image_tag(self):
-        return mark_safe('<img src="/static/media/%s" height="200" />' % self.logo)
+        return mark_safe('<img src="/static/media/%s" height="84" />' % self.logo)
 
     image_tag.short_description = "Логотип(просмотр)"
 
     class Meta:
         verbose_name = "композит"
         verbose_name_plural = "Композиты"
+
+    def __unicode__(self):
+        return self.name
+
+
+class Service(models.Model):
+    name = models.CharField(max_length=128, verbose_name="Название")
+    short_description = models.TextField(verbose_name="Краткое описание")
+    full_description = models.TextField(verbose_name="Описание")
+    image = models.ImageField(verbose_name="Изображение", blank=True)
+    order = models.IntegerField(verbose_name="Порядок")
+
+    def image_tag(self):
+        return mark_safe('<img src="/static/media/%s" height="200" />' % self.image)
+
+    image_tag.short_description = "Изображение(просмотр)"
+
+    class Meta:
+        verbose_name = "услуга"
+        verbose_name_plural = "Услуги"
 
     def __unicode__(self):
         return self.name

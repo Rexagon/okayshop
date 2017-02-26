@@ -41,7 +41,7 @@ table {
 }
 .content {
     z-index: 999;
-	margin-top: 1rem !important;
+	margin-top: 1.5rem !important;
 	min-height: 68vh;
     font-size: 16px;
     line-height: 20px;
@@ -309,7 +309,6 @@ body {
 
 .footer {
 	font-size: 13px;
-	margin-top: 8px;
 	color: #bababa;
 	background-color: #373939;
 }

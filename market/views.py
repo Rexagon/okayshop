@@ -2,13 +2,14 @@
 
 from django.shortcuts import render
 
-from market.models import SliderImage
+from market.models import SliderImage, Service, CompositeType
 
 
 def main(request):
     context = {
         "page": "main",
-        "images": SliderImage.objects.all()
+        "images": SliderImage.objects.all(),
+        "composites": CompositeType.objects.all()
     }
     return render(request, 'main.html', context=context)
 
@@ -22,7 +23,8 @@ def products(request):
 
 def services(request):
     context = {
-        "page": "services"
+        "page": "services",
+        "services": Service.objects.all().order_by('order')
     }
     return render(request, 'services.html', context=context)
 

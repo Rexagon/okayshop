@@ -7,7 +7,19 @@
     <div class="container">
         <div class="content">
             <div class="row">
-
+                <div class="col-md-12">
+                    <div class="title"><span>Услуги по обработке композитных материалов</span></div>
+                    Оказывается полный комплекс услуг по обработке композитных панелей. Все работы проводятся на профессиональном оборудовании специалистами высокого уровня. Осуществляется фрезеровка, вальцовка, вырубка, перфорация и резка листов практически любой сложности.
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                {% for service in services %}
+                <div class="col-md-4 box-outer">
+                    <div class="title"><span>{{ service.name }}</span></div>
+                    {{ service.short_description }}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
