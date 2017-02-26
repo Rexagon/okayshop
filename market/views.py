@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from market.models import SliderImage, Service, CompositeType
 
@@ -23,12 +23,15 @@ def products(request):
 
 
 def composite(request, name=""):
-
-    context = {
-        "page": "products",
-
-    }
-    return render(request, "composite.html", context=context)
+    try:
+        product = CompositeType.objects.filter(name__iexact=name)[0]
+        context = {
+            "page": "products",
+            "composite": product
+        }
+        return render(request, "composite.html", context=context)
+    except IndexError:
+        return redirect('/products')
 
 
 def services(request):
