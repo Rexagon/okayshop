@@ -377,7 +377,7 @@ body {
 
 .home-slider .item {
 	height: 255px;
-	width: 100%;
+	width: 100vw;
     overflow: hidden;
 }
 
