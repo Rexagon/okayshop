@@ -35,7 +35,7 @@
                 <div class="col-md-6 box-outer">
                     <img src="/static/media/{{ composite.logo }}" alt="{{ composite.name }}">
                     <br><br>
-                    <p>{{ composite.short_description }}</p>
+                    <p>{{ composite.short_description|safe }}</p>
                 </div>
                 {% endfor %}
             </div>

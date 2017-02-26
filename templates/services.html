@@ -15,9 +15,9 @@
             <hr>
             <div class="row">
                 {% for service in services %}
-                <div class="col-md-4 box-outer">
+                <div class="col-md-4 box-outer box-service">
                     <div class="title"><span>{{ service.name }}</span></div>
-                    {{ service.short_description }}
+                    {{ service.short_description|safe }}
                 </div>
                 {% endfor %}
             </div>

@@ -407,3 +407,7 @@ body {
 .box-outer:hover {
 	border: 1px solid #008275;
 }
+
+.box-service {
+    min-height: 220px;
+}

@@ -16,9 +16,19 @@ def main(request):
 
 def products(request):
     context = {
-        "page": "products"
+        "page": "products",
+        "composites": CompositeType.objects.all()
     }
     return render(request, 'products.html', context=context)
+
+
+def composite(request, name=""):
+
+    context = {
+        "page": "products",
+
+    }
+    return render(request, "composite.html", context=context)
 
 
 def services(request):
