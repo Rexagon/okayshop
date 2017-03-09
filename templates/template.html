@@ -59,12 +59,13 @@
                 </div>
                 <div class="collapse navbar-collapse" id="menu-navbar">
                     <ul class="nav navbar-nav">
-                        <li{% if page == "main" %} class="active"{% endif %}><a href="{% url "main" %}">Главная</a></li>
-                        <li{% if page == "products" %} class="active"{% endif %}><a href="{% url "products" %}">Продукция</a></li>
-                        <li{% if page == "services" %} class="active"{% endif %}><a href="{% url "services" %}">Услуги</a></li>
-                        <li{% if page == "delivery" %} class="active"{% endif %}><a href="{% url "delivery" %}">Доставка</a></li>
-                        <li{% if page == "checkout" %} class="active"{% endif %}><a href="{% url "checkout" %}">Заказ</a></li>
-                        <li{% if page == "contacts" %} class="active"{% endif %}><a href="{% url "contacts" %}">Контакты</a></li>
+                        <li{% if page == "main" %} class="active"{% endif %}><a href="/">Главная</a></li>
+                        <li{% if page == "products_altec" %} class="active"{% endif %}><a href="/products/altec">АКП ALTEC</a></li>
+                        <li{% if page == "products_stalex" %} class="active"{% endif %}><a href="/products/stalex">БКП STALEX</a></li>
+                        <li{% if page == "services" %} class="active"{% endif %}><a href="/services">Услуги</a></li>
+                        <li{% if page == "delivery" %} class="active"{% endif %}><a href="/delivery">Доставка</a></li>
+                        <li{% if page == "checkout" %} class="active"{% endif %}><a href="/checkout">Заказ</a></li>
+                        <li{% if page == "contacts" %} class="active"{% endif %}><a href="/contacts">Контакты</a></li>
                     </ul>
                 </div>
             </div>

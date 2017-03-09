@@ -36,11 +36,20 @@
                     <img src="/static/media/{{ composite.logo }}" alt="{{ composite.name }}">
                     <br><br>
                     <p>{{ composite.short_description|safe }}</p>
+                    <hr>
+                    <p align="center">
+                        <a href="/products/{{ composite.name|lower }}" class="btn btn-lg btn-primary">Подробнее</a>
+                        <a href="/products/{{ composite.name|lower }}/order" class="btn btn-lg btn-theme">Заказать</a>
+                    </p>
                 </div>
                 {% endfor %}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "css/carousel.min.css" %}">
 {% endblock %}
 
 {% block scripts %}

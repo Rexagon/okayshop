@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from market.models import SliderImage, Service, CompositeType
 
@@ -14,24 +15,28 @@ def main(request):
     return render(request, 'main.html', context=context)
 
 
-def products(request):
-    context = {
-        "page": "products",
-        "composites": CompositeType.objects.all()
-    }
-    return render(request, 'products.html', context=context)
-
-
-def composite(request, name=""):
+def products(request, name=""):
     try:
         product = CompositeType.objects.filter(name__iexact=name)[0]
         context = {
-            "page": "products",
+            "page": "products_" + product.name.lower(),
             "composite": product
         }
-        return render(request, "composite.html", context=context)
+        return render(request, "products.html", context=context)
     except IndexError:
-        return redirect('/products')
+        return redirect('/')
+
+
+def order(request, name=""):
+    try:
+        product = CompositeType.objects.filter(name__iexact=name)[0]
+        context = {
+            "page": "products_" + product.name.lower(),
+            "composite": product
+        }
+        return render(request, "order.html", context=context)
+    except IndexError:
+        return redirect('/')
 
 
 def services(request):
@@ -61,3 +66,14 @@ def contacts(request):
         "page": "contacts"
     }
     return render(request, 'contacts.html', context=context)
+
+
+# stuff functions
+
+@csrf_exempt
+def message(request):
+    if request.method == "POST":
+
+        return JsonResponse({})
+    else:
+        return redirect('/')

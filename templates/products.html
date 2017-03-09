@@ -7,12 +7,10 @@
     <div class="container">
         <div class="content">
             <div class="row">
-                {% for composite in composites %}
-                <div class="col-md-6">
+                <div class="col-md-12 product">
                     <div class="title"><span>{{ composite.name }}</span></div>
                     {{ composite.full_description|safe }}
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>
