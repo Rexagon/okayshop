@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from market.models import SiteParameter, SliderImage, CompositeType, Service
+from market.models import SiteParameter, SliderImage, CompositeType, Service, TexturesGroup, Texture
 
 
 class ParametersAdmin(admin.ModelAdmin):
@@ -26,7 +26,14 @@ class ServiceAdmin(admin.ModelAdmin):
     ordering = ('order', )
 
 
+class TextureAdmin(admin.ModelAdmin):
+	fields = ('name', 'image_tag', 'image', 'group')
+	readonly_fields = ('image_tag',)
+
+
 admin.site.register(SiteParameter, ParametersAdmin)
 admin.site.register(SliderImage, SliderImageAdmin)
 admin.site.register(CompositeType, CompositeTypeAdmin)
 admin.site.register(Service, ServiceAdmin)
+admin.site.register(TexturesGroup)
+admin.site.register(Texture, TextureAdmin)

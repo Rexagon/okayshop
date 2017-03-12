@@ -81,3 +81,30 @@ class Service(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class TexturesGroup(models.Model):
+    name = models.CharField(max_length=128, verbose_name='Название')
+
+    class Meta:
+        verbose_name = "группа текстур"
+        verbose_name_plural = "Группы текстур"
+
+    def __unicode__(self):
+        return self.name
+
+
+class Texture(models.Model):
+    name = models.CharField(max_length=128, verbose_name="Артикул")
+    image = models.ImageField(verbose_name="Изображение")
+    group = models.ForeignKey('TexturesGroup', on_delete=models.CASCADE)
+
+    def image_tag(self):
+        return mark_safe('<img src="/static/media/%s" height="200" />' % self.image)
+
+    class Meta:
+        verbose_name = "текстура"
+        verbose_name_plural = "Текстуры"
+
+    def __unicode__(self):
+        return seld.name
