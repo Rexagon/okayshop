@@ -48,6 +48,7 @@ class CompositeType(models.Model):
     logo = models.ImageField(verbose_name="Логотип")
     short_description = models.TextField(verbose_name="Краткое описание")
     full_description = models.TextField(verbose_name="Описание")
+    application = models.TextField(verbose_name='Применение')
 
     def image_tag(self):
         return mark_safe('<img src="/static/media/%s" height="84" />' % self.logo)

@@ -16,7 +16,7 @@ class SliderImageAdmin(admin.ModelAdmin):
 
 
 class CompositeTypeAdmin(admin.ModelAdmin):
-    fields = ('name', 'image_tag', 'logo', 'short_description', 'full_description')
+    fields = ('name', 'image_tag', 'logo', 'short_description', 'full_description', 'application')
     readonly_fields = ('image_tag',)
 
 
