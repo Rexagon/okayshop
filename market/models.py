@@ -107,4 +107,4 @@ class Texture(models.Model):
         verbose_name_plural = "Текстуры"
 
     def __unicode__(self):
-        return seld.name
+        return self.name

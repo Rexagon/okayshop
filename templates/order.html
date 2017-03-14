@@ -29,25 +29,11 @@
 	                            </td>
 	                        </tr>
 	                        <tr>
-	                            <td>Наличие</td>
-	                            <td>{% if product.in_stock %}<span class="label label-success arrowed">Имеется</span>{% else %}<span class="label label-danger arrowed">Отсутствует</span>{% endif %}</td>
-	                        </tr>
-	                        {% if product.in_stock %}
-	                        <tr>
-	                            <td>Количество</td>
-	                            <td>
-	                                <div class="input-qty">
-	                                    <input type="text" value="1" id="quantity" class="form-control text-center"/>
-	                                </div>
-	                            </td>
-	                        </tr>
-	                        <tr>
 	                            <td></td>
 	                            <td>
 	                                <button class="btn btn-theme" id="product-add" type="button"><i class="fa fa-shopping-cart"></i> Добавить в корзину</button>
 	                            </td>
 	                        </tr>
-	                        {% endif %}
 	                    </tbody>
 	                </table>
 				</div>
