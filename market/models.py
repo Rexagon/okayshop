@@ -97,10 +97,14 @@ class TexturesGroup(models.Model):
 class Texture(models.Model):
     name = models.CharField(max_length=128, verbose_name="Артикул")
     image = models.ImageField(verbose_name="Изображение")
+    big_image = models.ImageField(verbose_name="Большое изображение")
     group = models.ForeignKey('TexturesGroup', on_delete=models.CASCADE)
 
     def image_tag(self):
         return mark_safe('<img src="/static/media/%s" height="200" />' % self.image)
+
+    def big_image_tag(self):
+        return mark_safe('<img src="/static/media/%s" height="200" />' % self.big_image)
 
     class Meta:
         verbose_name = "текстура"

@@ -27,8 +27,8 @@ class ServiceAdmin(admin.ModelAdmin):
 
 
 class TextureAdmin(admin.ModelAdmin):
-    fields = ('name', 'image_tag', 'image', 'group')
-    readonly_fields = ('image_tag',)
+    fields = ('name', 'image_tag', 'image', 'big_image', 'big_image_tag', 'group')
+    readonly_fields = ('image_tag', 'big_image_tag')
 
 
 admin.site.register(SiteParameter, ParametersAdmin)
