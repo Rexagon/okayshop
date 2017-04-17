@@ -20,7 +20,7 @@
                         <div role="tabpanel" class="tab-pane active" id="texture-group-{{ texture_group.id }}">
                             <div class="row">
                                 {% for texture in texture_group.textures %}
-                                    <div class="col-md-2"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" height="50"></div>
+                                    <div class="col-md-2"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="60"></div>
                                 {% endfor %}
                             </div>
                         </div>
