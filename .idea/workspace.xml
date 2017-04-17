@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ec60a34-9319-4421-915c-9a7826ecdc23" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/fd7c28f6-7634-40c9-863c-e9dacb759fea.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/fd7c28f6-7634-40c9-863c-e9dacb759fea.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Ivan.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Ivan.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market/admin.py" afterPath="$PROJECT_DIR$/market/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market/models.py" afterPath="$PROJECT_DIR$/market/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market/views.py" afterPath="$PROJECT_DIR$/market/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/template.css" afterPath="$PROJECT_DIR$/static/css/template.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/order.html" afterPath="$PROJECT_DIR$/templates/order.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,17 +46,17 @@
           <file leaf-file-name="order.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/templates/order.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="357">
-                  <caret line="21" column="119" lean-forward="false" selection-start-line="21" selection-start-column="119" selection-end-line="21" selection-end-column="119" />
+                <state relative-caret-position="374">
+                  <caret line="22" column="138" lean-forward="false" selection-start-line="22" selection-start-column="138" selection-end-line="22" selection-end-column="138" />
                   <folding>
-                    <element signature="e#1495#1516#0#HTML" expanded="true" />
-                    <element signature="e#1560#1581#0#HTML" expanded="true" />
-                    <element signature="e#1916#1935#0#HTML" expanded="true" />
-                    <element signature="e#2615#2636#0#HTML" expanded="true" />
-                    <element signature="e#3111#3132#0#HTML" expanded="true" />
-                    <element signature="e#3610#3631#0#HTML" expanded="true" />
-                    <element signature="e#4121#4142#0#HTML" expanded="true" />
-                    <element signature="e#4598#4619#0#HTML" expanded="true" />
+                    <element signature="e#1600#1621#0#HTML" expanded="true" />
+                    <element signature="e#1665#1686#0#HTML" expanded="true" />
+                    <element signature="e#2021#2040#0#HTML" expanded="true" />
+                    <element signature="e#2720#2741#0#HTML" expanded="true" />
+                    <element signature="e#3216#3237#0#HTML" expanded="true" />
+                    <element signature="e#3715#3736#0#HTML" expanded="true" />
+                    <element signature="e#4226#4247#0#HTML" expanded="true" />
+                    <element signature="e#4703#4724#0#HTML" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -1073,17 +1066,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/order.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="119" lean-forward="false" selection-start-line="21" selection-start-column="119" selection-end-line="21" selection-end-column="119" />
+        <state relative-caret-position="374">
+          <caret line="22" column="138" lean-forward="false" selection-start-line="22" selection-start-column="138" selection-end-line="22" selection-end-column="138" />
           <folding>
-            <element signature="e#1495#1516#0#HTML" expanded="true" />
-            <element signature="e#1560#1581#0#HTML" expanded="true" />
-            <element signature="e#1916#1935#0#HTML" expanded="true" />
-            <element signature="e#2615#2636#0#HTML" expanded="true" />
-            <element signature="e#3111#3132#0#HTML" expanded="true" />
-            <element signature="e#3610#3631#0#HTML" expanded="true" />
-            <element signature="e#4121#4142#0#HTML" expanded="true" />
-            <element signature="e#4598#4619#0#HTML" expanded="true" />
+            <element signature="e#1600#1621#0#HTML" expanded="true" />
+            <element signature="e#1665#1686#0#HTML" expanded="true" />
+            <element signature="e#2021#2040#0#HTML" expanded="true" />
+            <element signature="e#2720#2741#0#HTML" expanded="true" />
+            <element signature="e#3216#3237#0#HTML" expanded="true" />
+            <element signature="e#3715#3736#0#HTML" expanded="true" />
+            <element signature="e#4226#4247#0#HTML" expanded="true" />
+            <element signature="e#4703#4724#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

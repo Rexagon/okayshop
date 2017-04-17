@@ -18,9 +18,11 @@
                     <div class="tab-content tab-content-detail">
                         {% for texture_group in texture_groups %}
                         <div role="tabpanel" class="tab-pane active" id="texture-group-{{ texture_group.id }}">
-                            {% for texture in texture_group.textures %}
-                                <div class="col-md-2"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}"></div>
-                            {% endfor %}
+                            <div class="row">
+                                {% for texture in texture_group.textures %}
+                                    <div class="col-md-2"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" height="50"></div>
+                                {% endfor %}
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
