@@ -9,22 +9,85 @@
             <div class="row">
 				<div class="col-md-4">
 					<div class="title"><span>Цвет</span></div>
+                    <ul class="nav nav-tabs" id="texture-groups-nav" role="tablist">
+                        {% for texture_group in texture_groups %}
+                        <li role="presentation"><a href="#texture-group-{{ texture_group.id }}" role="tab" data-toggle="tab">{{ texture_group.name }}</a></li>
+                        {% endfor %}
+                    </ul>
 
-				</div>
+                    <div class="tab-content tab-content-detail">
+                        {% for texture_group in texture_groups %}
+                        <div role="tabpanel" class="tab-pane active" id="texture-group-{{ texture_group.id }}">
+                            {% for texture in texture_group.textures %}
+                                <div class="col-md-2"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}"></div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
 				<div class="col-md-8">
-					<div class="title-detail">{{ composite.name }}</div>
+                    <div class="title"><span>{{ composite.name }}</span></div>
 	                <table class="table table-detail">
 	                    <tbody>
 	                    	<tr>
-	                    		<td>Применение</td>
-	                    		<td>{{ composite.application|safe }}</td>
+	                    		<td style="border-top: 0">Применение</td>
+	                    		<td style="border-top: 0">{{ composite.application|safe }}</td>
 	                    	</tr>
-	                        <tr>
-	                            <td>Площадь</td>
-	                            <td>
+                            <tr>
+                                <td>Тип листа</td>
+                                <td>
+                                    <div class="input-group">
+                                        <select class="form-control" id="sheet-type" style="width: 100%">
+                                            {% for type in sheet_types %}
+                                                <option value="{{ type.id }}">{{ type.name }}</option>
+                                            {% endfor %}
+                                            <option value="-1">Другой</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="sheet-custom">
+                                <td>Ширина листа</td>
+                                <td>
 	                            	<div class="input-group" style="width: 100px;">
-		                                <input type="text" class="form-control">
-		                                <span class="input-group-addon">м&sup2;</span>
+		                                <input id="sheet-width" type="text" class="form-control">
+		                                <span class="input-group-addon">м.</span>
+	                            	</div>
+	                            </td>
+                            </tr>
+                            <tr class="sheet-custom">
+                                <td>Длина листа</td>
+                                <td>
+	                            	<div class="input-group" style="width: 100px;">
+		                                <input id="sheet-length" type="text" class="form-control">
+		                                <span class="input-group-addon">м.</span>
+	                            	</div>
+	                            </td>
+                            </tr>
+                            <tr class="sheet-custom">
+                                <td>Толщина листа</td>
+                                <td>
+	                            	<div class="input-group" style="width: 110px;">
+		                                <input id="sheet-thickness" type="text" class="form-control">
+		                                <span class="input-group-addon">мм.</span>
+	                            	</div>
+	                            </td>
+                            </tr>
+                            <tr class="sheet-custom">
+                                <td>Толщина внещних слоёв</td>
+                                <td>
+	                            	<div class="input-group" style="width: 110px;">
+		                                <input id="sheet-thickness" type="text" class="form-control">
+		                                <span class="input-group-addon">мм.</span>
+	                            	</div>
+	                            </td>
+                            </tr>
+	                        <tr>
+	                            <td>Количество листов</td>
+	                            <td>
+	                            	<div class="input-group" style="width: 106px;">
+		                                <input id="quantity" type="text" class="form-control">
+		                                <span class="input-group-addon">шт.</span>
 	                            	</div>
 	                            </td>
 	                        </tr>
@@ -40,4 +103,17 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#texture-groups-nav li:first-child a').tab('show');
+
+            $('#sheet-type').on('change', function () {
+                $('.sheet-custom').toggle($(this).val() == '-1');
+            });
+            $('#sheet-type').trigger('change');
+        });
+    </script>
 {% endblock %}

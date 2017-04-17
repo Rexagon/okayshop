@@ -185,6 +185,16 @@ fieldset[disabled] .btn-theme.focus {
     border-color: #009688;
 }
 
+.nav-tabs > li > a {
+    border-radius: 0 0 0 0;
+    color: #666;
+    font-size: 16px;
+    padding: 5px;
+}
+.nav-tabs > li > a:focus, .nav-tabs > li > a:active {
+    outline: 0;
+}
+
 /* All page styles */
 * {
     -webkit-box-sizing: border-box;

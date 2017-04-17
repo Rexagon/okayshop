@@ -573,31 +573,36 @@ model</ColNames>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="132" parent="18" name="market_texture_group_id_9472834d_fk_market_texturesgroup_id">
+    <column id="132" parent="18" name="big_image">
+      <Position>5</Position>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="133" parent="18" name="market_texture_group_id_9472834d_fk_market_texturesgroup_id">
       <ColNames>group_id</ColNames>
     </index>
-    <key id="133" parent="18" name="PRIMARY">
+    <key id="134" parent="18" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="134" parent="18" name="market_texture_group_id_9472834d_fk_market_texturesgroup_id">
+    <foreign-key id="135" parent="18" name="market_texture_group_id_9472834d_fk_market_texturesgroup_id">
       <ColNames>group_id</ColNames>
       <RefSchemaName>okayshop</RefSchemaName>
       <RefTableName>market_texturesgroup</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="135" parent="19" name="id">
+    <column id="136" parent="19" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="136" parent="19" name="name">
+    <column id="137" parent="19" name="name">
       <Position>2</Position>
       <DataType>varchar(128)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="137" parent="19" name="PRIMARY">
+    <key id="138" parent="19" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

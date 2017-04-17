@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.template.defaulttags import register
 from django.utils.safestring import mark_safe
 
 
@@ -86,6 +87,10 @@ class Service(models.Model):
 class TexturesGroup(models.Model):
     name = models.CharField(max_length=128, verbose_name='Название')
 
+    @property
+    def textures(self):
+        return Texture.objects.filter(group_id__exact=self.id)
+
     class Meta:
         verbose_name = "группа текстур"
         verbose_name_plural = "Группы текстур"
@@ -109,6 +114,34 @@ class Texture(models.Model):
     class Meta:
         verbose_name = "текстура"
         verbose_name_plural = "Текстуры"
+
+    def __unicode__(self):
+        return self.name
+
+
+class CompositeSheetType(models.Model):
+    name = models.CharField(max_length=128, verbose_name="Название")
+    width = models.IntegerField(verbose_name="Ширина")
+    length = models.IntegerField(verbose_name="Длина")
+    thickness = models.IntegerField(verbose_name="Толщина")
+    composite_type = models.ForeignKey('CompositeType', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "вид панели"
+        verbose_name_plural = "Виды панелей"
+
+    def __unicode__(self):
+        return self.name
+
+
+class CompositeSheetOption(models.Model):
+    name = models.CharField(max_length=128, verbose_name="Название")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
+    description = models.TextField(verbose_name="Краткое описание")
+
+    class Meta:
+        verbose_name = "опция панели"
+        verbose_name_plural = "Опции панели"
 
     def __unicode__(self):
         return self.name

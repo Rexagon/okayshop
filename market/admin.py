@@ -2,7 +2,8 @@
 
 from django.contrib import admin
 
-from market.models import SiteParameter, SliderImage, CompositeType, Service, TexturesGroup, Texture
+from market.models import SiteParameter, SliderImage, CompositeType, Service, TexturesGroup, Texture, CompositeSheetType, \
+    CompositeSheetOption
 
 
 class ParametersAdmin(admin.ModelAdmin):
@@ -34,6 +35,8 @@ class TextureAdmin(admin.ModelAdmin):
 admin.site.register(SiteParameter, ParametersAdmin)
 admin.site.register(SliderImage, SliderImageAdmin)
 admin.site.register(CompositeType, CompositeTypeAdmin)
+admin.site.register(CompositeSheetType)
+admin.site.register(CompositeSheetOption)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(TexturesGroup)
 admin.site.register(Texture, TextureAdmin)
