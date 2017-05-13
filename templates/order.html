@@ -8,24 +8,30 @@
         <div class="content">
             <div class="row">
 				<div class="col-md-4">
-					<div class="title"><span>Цвет</span></div>
+					<div class="title"><span>Текстура</span></div>
                     <ul class="nav nav-tabs" id="texture-groups-nav" role="tablist">
                         {% for texture_group in texture_groups %}
                         <li role="presentation"><a href="#texture-group-{{ texture_group.id }}" role="tab" data-toggle="tab">{{ texture_group.name }}</a></li>
                         {% endfor %}
                     </ul>
 
-                    <div class="tab-content tab-content-detail">
+                    <div class="tab-content tab-content-textures">
                         {% for texture_group in texture_groups %}
                         <div role="tabpanel" class="tab-pane active" id="texture-group-{{ texture_group.id }}">
                             <br>
-                            <div class="row" style="padding-right: 10px">
+                            <div style="padding-right: 10px">
                                 {% for texture in texture_group.textures %}
-                                    <div class="col-md-2"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="60"></div>
+                                    <div id="texture-{{ texture.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
                                 {% endfor %}
                             </div>
                         </div>
                         {% endfor %}
+                    </div>
+
+                    <br>
+                    <div class="title"></div>
+                    <div class="sheet-texture-wrapper">
+
                     </div>
                 </div>
 				<div class="col-md-8">
@@ -112,6 +118,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#texture-groups-nav li:first-child a').tab('show');
+
+            $('.texture').click(function () {
+                $('.selected').removeClass('selected');
+                $(this).addClass('selected');
+                var html = "Выбранная текстура: <img src=\"" + $(this).find('img').attr('src') + "\" width=\"200px\">";
+                $($('.sheet-texture-wrapper')[0]).html(html);
+            });
 
             $('#sheet-type').on('change', function () {
                 $('.sheet-custom').toggle($(this).val() == '-1');

@@ -459,6 +459,26 @@ body {
 
 /* detail page */
 
+.texture {
+    display: inline-block;
+    float: left;
+    width: 20%;
+    padding-top: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    cursor: pointer;
+}
+
+.texture:hover {
+    background-color: #cccccc;
+}
+
+.texture.selected {
+    -webkit-box-shadow:inset 0px 0px 0px 2px #f00;
+    -moz-box-shadow:inset 0px 0px 0px 2px #f00;
+    box-shadow:inset 0px 0px 0px 2px #f00;
+}
+
 .image-detail {
     margin-bottom: 10px;
 }
@@ -514,11 +534,25 @@ body {
     outline: 0;
 }
 
+.tab-content-textures {
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.sheet-texture-wrapper {
+    width: 100%;
+}
+
+.sheet-texture-wrapper img {
+    border: 1px solid black;
+}
+
 .tab-content-detail table tr td:first-child {
     background: #f8f8f8;
 }
 
-.tab-content-detail .desctiption {
+.tab-content-detail .description {
     border-top: 0;
     border-radius: 0;
     background: #fff;
