@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ec60a34-9319-4421-915c-9a7826ecdc23" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/market/cart.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market/content_preprocessors.py" afterPath="$PROJECT_DIR$/market/content_preprocessors.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market/models.py" afterPath="$PROJECT_DIR$/market/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market/views.py" afterPath="$PROJECT_DIR$/market/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/order.html" afterPath="$PROJECT_DIR$/templates/order.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -35,7 +31,7 @@
     <favorites_list name="okayshop" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5211864">
+    <splitter split-orientation="horizontal" split-proportion="0.21912833">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
@@ -126,8 +122,8 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/market/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="289">
-                  <caret line="131" column="121" lean-forward="false" selection-start-line="131" selection-start-column="121" selection-end-line="131" selection-end-column="121" />
+                <state relative-caret-position="357">
+                  <caret line="132" column="0" lean-forward="true" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
                   <folding>
                     <element signature="e#25#64#0" expanded="true" />
                   </folding>
@@ -1074,8 +1070,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/market/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="131" column="121" lean-forward="false" selection-start-line="131" selection-start-column="121" selection-end-line="131" selection-end-column="121" />
+        <state relative-caret-position="357">
+          <caret line="132" column="0" lean-forward="true" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
           <folding>
             <element signature="e#25#64#0" expanded="true" />
           </folding>
