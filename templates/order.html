@@ -21,7 +21,7 @@
                             <br>
                             <div style="padding-right: 10px">
                                 {% for texture in texture_group.textures %}
-                                    <div id="texture-{{ texture.id }}" data-name="{{ texture.name }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
+                                    <div id="texture-{{ texture.id }}" data-name="{{ texture.name }}" data-group="{{ texture_group.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -83,7 +83,7 @@
 	                            </td>
                             </tr>
                             <tr class="sheet-custom">
-                                <td>Толщина внещних слоёв</td>
+                                <td>Толщина внешних слоёв</td>
                                 <td>
 	                            	<div class="input-group" style="width: 110px;">
 		                                <input id="sheet-thickness" type="text" class="form-control">
@@ -101,6 +101,43 @@
                                     <span id="quantity" style="line-height: 34px; margin-left: 10px;">0 листов</span>
                                 </td>
 	                        </tr>
+                            <tr>
+                                <td>Опции</td>
+                                <td>
+                                    <div class="radio"><label><input type="radio" name="coating-main" checked="checked"><span>Покрытие PE</span></label></div>
+                                    <div class="radio"><label><input type="radio" name="coating-main"><span>Покрытие PVDF</span></label></div>
+                                    <hr>
+                                    <div id="coating-additional-wrapper">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="coating-additional" checked="checked">
+                                                <span>
+                                                    Текстурное покрытие на основе УФ-отверждаемых полимеров
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="coating-additional">
+                                                <span>
+                                                    Текстурное покрытие на основе ПЭТ
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="radio" id="coating-additional-wood">
+                                            <label>
+                                                <input type="radio" name="coating-additional">
+                                                <span>
+                                                    Крашеное покрытие
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <div class="checkbox"><label><input id="stained" type="checkbox"><span> Покрытие лаком</span></label></div>
+                                    </div>
+                                    <div class="checkbox"><label><input id="stained" type="checkbox"><span> Глянец</span></label></div>
+                                </td>
+                            </tr>
 	                        <tr>
 	                            <td></td>
 	                            <td>
@@ -122,12 +159,19 @@
         $(document).ready(function () {
             $('#texture-groups-nav li:first-child a').tab('show');
 
+            $('#coating-additional-wrapper').hide();
+
             $('.texture').click(function () {
                 $('.selected').removeClass('selected');
                 $(this).addClass('selected');
                 var html = "Выбранная текстура: <img src=\"" + $(this).find('img').attr('src') + "\" width=\"200px\">";
                 html += "<br><br>Артикул: <b>" + $(this).attr('data-name') + "</b>";
                 $($('.sheet-texture-wrapper')[0]).html(html);
+                var group = parseInt($(this).attr('data-group'));
+
+                $('#coating-additional-wrapper').toggle(group != 1);
+                $('#coating-additional-wood').toggle(group == 2);
+                $('input[name="coating-additional"]:first').click();
             });
 
             $('#sheet-type').on('change', function () {
