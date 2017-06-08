@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
-from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup
+from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup, Cart
 
 
 def main(request):
@@ -28,19 +28,27 @@ def products(request, name=""):
 
 
 def order(request, name=""):
-    try:
-        product = CompositeType.objects.filter(name__iexact=name)[0]
-        sheet_types = CompositeSheetType.objects.filter(composite_type__name__iexact=name)
-        texture_groups = TexturesGroup.objects.all()
-        context = {
-            "page": "products_" + product.name.lower(),
-            "composite": product,
-            "sheet_types": sheet_types,
-            "texture_groups": texture_groups
-        }
-        return render(request, "order.html", context=context)
-    except IndexError:
-        return redirect('/')
+    if request.method == 'GET':
+        try:
+            product = CompositeType.objects.filter(name__iexact=name)[0]
+            sheet_types = CompositeSheetType.objects.filter(composite_type__name__iexact=name)
+            texture_groups = TexturesGroup.objects.all()
+            context = {
+                "page": "products_" + product.name.lower(),
+                "composite": product,
+                "sheet_types": sheet_types,
+                "texture_groups": texture_groups
+            }
+            return render(request, "order.html", context=context)
+        except IndexError:
+            return redirect('/')
+    elif request.method == 'POST':
+        try:
+            cart = Cart(request)
+
+            return JsonResponse({})
+        except:
+            return JsonResponse({'err': True})
 
 
 def services(request):

@@ -21,7 +21,7 @@
                             <br>
                             <div style="padding-right: 10px">
                                 {% for texture in texture_group.textures %}
-                                    <div id="texture-{{ texture.id }}" data-name="{{ texture.name }}" data-group="{{ texture_group.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
+                                    <div id="texture-{{ texture.id }}" data-id="{{ texture.id }}" data-name="{{ texture.name }}" data-group="{{ texture_group.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -50,11 +50,14 @@
                                             {% for type in sheet_types %}
                                                 <option data-width="{{ type.width }}" data-length="{{ type.length }}" value="{{ type.id }}">{{ type.name }}</option>
                                             {% endfor %}
-                                            <!--<option value="-1">Другой</option>-->
+                                            {% comment %}
+                                            <option value="-1">Другой</option>
+                                            {% endcomment %}
                                         </select>
                                     </div>
                                 </td>
                             </tr>
+                            {% comment  %}
                             <tr class="sheet-custom">
                                 <td>Ширина листа</td>
                                 <td>
@@ -91,6 +94,7 @@
 	                            	</div>
 	                            </td>
                             </tr>
+                            {% endcomment %}
 	                        <tr>
 	                            <td>Площадь</td>
 	                            <td>
@@ -104,13 +108,13 @@
                             <tr>
                                 <td>Опции</td>
                                 <td>
-                                    <div class="radio"><label><input type="radio" name="coating-main" checked="checked"><span>Покрытие PE</span></label></div>
-                                    <div class="radio"><label><input type="radio" name="coating-main"><span>Покрытие PVDF</span></label></div>
+                                    <div class="radio"><label><input type="radio" name="coating-main" value="1" checked="checked"><span>Покрытие PE</span></label></div>
+                                    <div class="radio"><label><input type="radio" name="coating-main" value="2" ><span>Покрытие PVDF</span></label></div>
                                     <hr>
                                     <div id="coating-additional-wrapper">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="coating-additional" checked="checked">
+                                                <input type="radio" name="coating-additional" value="1" checked="checked">
                                                 <span>
                                                     Текстурное покрытие на основе УФ-отверждаемых полимеров
                                                 </span>
@@ -118,7 +122,7 @@
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="coating-additional">
+                                                <input type="radio" name="coating-additional" value="2">
                                                 <span>
                                                     Текстурное покрытие на основе ПЭТ
                                                 </span>
@@ -126,7 +130,7 @@
                                         </div>
                                         <div class="radio" id="coating-additional-wood">
                                             <label>
-                                                <input type="radio" name="coating-additional">
+                                                <input type="radio" name="coating-additional" value="3">
                                                 <span>
                                                     Крашеное покрытие
                                                 </span>
@@ -153,9 +157,11 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        var currentSquare = 0;
-
         $(document).ready(function () {
+            var currentSquare = 0;
+            var currentGroup = 0;
+            var currentImageId = null;
+
             $('#texture-groups-nav li:first-child a').tab('show');
 
             $('#coating-additional-wrapper').hide();
@@ -163,14 +169,15 @@
             $('.texture').click(function () {
                 $('.selected').removeClass('selected');
                 $(this).addClass('selected');
+                currentImageId = $(this).attr('data-id');
                 var html = "Выбранная текстура: <img src=\"" + $(this).find('img').attr('src') + "\" width=\"200px\">";
                 html += "<br><br>Артикул: <b>" + $(this).attr('data-name') + "</b>";
                 $($('.sheet-texture-wrapper')[0]).html(html);
-                var group = parseInt($(this).attr('data-group'));
+                currentGroup = parseInt($(this).attr('data-group'));
 
-                $('#coating-additional-wrapper').toggle(group != 1);
-                $('#coating-additional-wood').toggle(group == 2);
-                if (group == 1) {
+                $('#coating-additional-wrapper').toggle(currentGroup != 1);
+                $('#coating-additional-wood').toggle(currentGroup == 2);
+                if (currentGroup == 1) {
                     $('#stained-label').html(' Глянец');
                 }
                 else {
@@ -185,7 +192,7 @@
                 currentSquare = parseFloat(option.attr('data-width')) * parseFloat(option.attr('data-length'));
                 currentSquare /= 1000000.0;
 
-                $('.sheet-custom').toggle($(this).val() == '-1');
+               // $('.sheet-custom').toggle($(this).val() == '-1');
             });
             $('#sheet-type').trigger('change');
 
@@ -214,6 +221,48 @@
                 var cases = [2, 0, 1, 1, 1, 2];
                 var sheet = titles[(number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5]];
                 $('#quantity').html(Math.ceil(value / currentSquare) + ' ' + sheet);
+            });
+
+            $('#product-add').on('click', function () {
+                var composite_type = {{ composite.id }};
+                var sheet_type = parseInt($('#sheet-type').val());
+                var square = parseInt($('#square').val());
+                var coatingMain = parseInt($('input[name="coating-main"]:checked').val());
+                var coatingAdditional = parseInt($('input[name="coating-additional"]:checked').val());
+                var stained = $('#stained').is(":checked");
+
+                if (!square) {
+                    alert('Укажите площадь');
+                }
+                else if (!currentImageId) {
+                    alert('Выберите текстуру');
+                }
+                else {
+                    var data = {
+                        type: composite_type,
+                        sheet_type: sheet_type,
+                        texture: parseInt(currentImageId),
+                        square: square,
+                        coating_main: coatingMain,
+                        coating_additional: 0,
+                        stained: stained
+                    };
+
+                    if (currentGroup != 1) {
+                        data.coating_additional = coatingAdditional;
+                    }
+
+                    console.log(data);
+
+                    $.post('/order', data, function (res) {
+                        if (res.err) {
+                            alert('Произошла ошибка');
+                        }
+                        else {
+
+                        }
+                    });
+                }
             });
         });
     </script>

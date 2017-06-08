@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.defaulttags import register
 from django.utils.safestring import mark_safe
@@ -128,6 +129,7 @@ class CompositeSheetType(models.Model):
     price_low = models.DecimalField(verbose_name="Стоимость (р/м2)", max_digits=10, decimal_places=2)
     price_middle = models.DecimalField(verbose_name="Стоимость (р/м2)от 100 м2 до 500 м2", max_digits=10, decimal_places=2)
     price_high = models.DecimalField(verbose_name="Стоимость (р/м2) от 500 м2", max_digits=10, decimal_places=2)
+    price_huge = models.DecimalField(verbose_name="Стоимость (р/м2) от 3000", max_digits=10, decimal_places=2, blank=True)
 
     class Meta:
         verbose_name = "вид панели"
@@ -148,3 +150,65 @@ class CompositeSheetOption(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Cart(models.Model):
+    creation_date = models.DateTimeField(verbose_name="Дата создания")
+    checked_out = models.BooleanField(default=False, verbose_name="Оплачено")
+
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзины"
+        ordering = ("-creation_date",)
+
+    def __unicode__(self):
+        return str(self.creation_date)
+
+
+class ItemManager(models.Manager):
+    def get(self, *args, **kwargs):
+        if "product" in kwargs:
+            kwargs["content_type"] = ContentType.objects.get_for_model(type(kwargs["product"]))
+            kwargs["object_id"] = kwargs['product'].pk
+            del(kwargs["product"])
+        return super(ItemManager, self).get(*args, **kwargs)
+
+
+class Item(models.Model):
+    cart = models.ForeignKey(Cart, verbose_name="cart")
+
+    type = models.IntegerField()
+    sheet_type = models.IntegerField()
+    texture = models.IntegerField()
+    square = models.FloatField()
+    coating_main = models.IntegerField()
+    coating_additional = models.IntegerField()
+    stained = models.BooleanField()
+
+    # product as generic relation
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+
+    objects = ItemManager()
+
+    class Meta:
+        verbose_name = 'item'
+        verbose_name_plural = 'items'
+        ordering = ('cart',)
+
+    def __unicode__(self):
+        return u'%d units of %s' % (self.quantity, self.product.__class__.__name__)
+
+    def total_price(self):
+        return self.quantity * self.unit_price
+    total_price = property(total_price)
+
+    # product
+    def get_product(self):
+        return self.content_type.get_object_for_this_type(pk=self.object_id)
+
+    def set_product(self, product):
+        self.content_type = ContentType.objects.get_for_model(type(product))
+        self.object_id = product.pk
+
+    product = property(get_product, set_product)
