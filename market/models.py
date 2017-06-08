@@ -125,6 +125,9 @@ class CompositeSheetType(models.Model):
     length = models.IntegerField(verbose_name="Длина")
     thickness = models.IntegerField(verbose_name="Толщина")
     composite_type = models.ForeignKey('CompositeType', on_delete=models.CASCADE)
+    price_low = models.DecimalField(verbose_name="Стоимость (р/м2)", max_digits=10, decimal_places=2)
+    price_middle = models.DecimalField(verbose_name="Стоимость (р/м2)от 100 м2 до 500 м2", max_digits=10, decimal_places=2)
+    price_high = models.DecimalField(verbose_name="Стоимость (р/м2) от 500 м2", max_digits=10, decimal_places=2)
 
     class Meta:
         verbose_name = "вид панели"

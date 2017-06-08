@@ -21,7 +21,7 @@
                             <br>
                             <div style="padding-right: 10px">
                                 {% for texture in texture_group.textures %}
-                                    <div id="texture-{{ texture.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
+                                    <div id="texture-{{ texture.id }}" data-name="{{ texture.name }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -48,9 +48,9 @@
                                     <div class="input-group">
                                         <select class="form-control" id="sheet-type" style="width: 100%">
                                             {% for type in sheet_types %}
-                                                <option value="{{ type.id }}">{{ type.name }}</option>
+                                                <option data-width="{{ type.width }}" data-length="{{ type.length }}" value="{{ type.id }}">{{ type.name }}</option>
                                             {% endfor %}
-                                            <option value="-1">Другой</option>
+                                            <!--<option value="-1">Другой</option>-->
                                         </select>
                                     </div>
                                 </td>
@@ -92,13 +92,14 @@
 	                            </td>
                             </tr>
 	                        <tr>
-	                            <td>Количество листов</td>
+	                            <td>Площадь</td>
 	                            <td>
-	                            	<div class="input-group" style="width: 106px;">
-		                                <input id="quantity" type="text" class="form-control">
-		                                <span class="input-group-addon">шт.</span>
+	                            	<div class="input-group" style="width: 200px; float: left;">
+		                                <input id="square" type="text" class="form-control">
+		                                <span class="input-group-addon">м&sup2;</span>
 	                            	</div>
-	                            </td>
+                                    <span id="quantity" style="line-height: 34px; margin-left: 10px;">0 листов</span>
+                                </td>
 	                        </tr>
 	                        <tr>
 	                            <td></td>
@@ -116,6 +117,8 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        var currentSquare = 0;
+
         $(document).ready(function () {
             $('#texture-groups-nav li:first-child a').tab('show');
 
@@ -123,13 +126,45 @@
                 $('.selected').removeClass('selected');
                 $(this).addClass('selected');
                 var html = "Выбранная текстура: <img src=\"" + $(this).find('img').attr('src') + "\" width=\"200px\">";
+                html += "<br><br>Артикул: <b>" + $(this).attr('data-name') + "</b>";
                 $($('.sheet-texture-wrapper')[0]).html(html);
             });
 
             $('#sheet-type').on('change', function () {
+                var option = $(this).find('option:selected');
+                currentSquare = parseFloat(option.attr('data-width')) * parseFloat(option.attr('data-length'));
+                currentSquare /= 1000000.0;
+
                 $('.sheet-custom').toggle($(this).val() == '-1');
             });
             $('#sheet-type').trigger('change');
+
+            $('#square').keydown(function (e) {
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.keyCode >= 35 && e.keyCode <= 39))
+                {
+                    return;
+                }
+
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#square').on('input', function(e) {
+                var value = parseFloat($(this).val());
+                if (!value) {
+                    value = 0;
+                }
+                var titles = ['лист', 'листа', 'листов'];
+                var number = Math.ceil(value / currentSquare);
+                var cases = [2, 0, 1, 1, 1, 2];
+                var sheet = titles[(number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5]];
+                $('#quantity').html(Math.ceil(value / currentSquare) + ' ' + sheet);
+            });
         });
     </script>
 {% endblock %}
