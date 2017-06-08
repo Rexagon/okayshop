@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-
-from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup, Cart
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from market.cart import Cart
+from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup
 
 
 def main(request):
@@ -28,23 +29,30 @@ def products(request, name=""):
 
 
 def order(request, name=""):
-    if request.method == 'GET':
-        try:
-            product = CompositeType.objects.filter(name__iexact=name)[0]
-            sheet_types = CompositeSheetType.objects.filter(composite_type__name__iexact=name)
-            texture_groups = TexturesGroup.objects.all()
-            context = {
-                "page": "products_" + product.name.lower(),
-                "composite": product,
-                "sheet_types": sheet_types,
-                "texture_groups": texture_groups
-            }
-            return render(request, "order.html", context=context)
-        except IndexError:
-            return redirect('/')
-    elif request.method == 'POST':
+    try:
+        product = CompositeType.objects.filter(name__iexact=name)[0]
+        sheet_types = CompositeSheetType.objects.filter(composite_type__name__iexact=name)
+        texture_groups = TexturesGroup.objects.all()
+        context = {
+            "page": "products_" + product.name.lower(),
+            "composite": product,
+            "sheet_types": sheet_types,
+            "texture_groups": texture_groups
+        }
+        return render(request, "order.html", context=context)
+    except IndexError:
+        return redirect('/')
+
+
+@csrf_exempt
+def handle_order(request):
+    if request.method == 'POST':
         try:
             cart = Cart(request)
+
+            data = json.loads(request.body)
+
+            cart.add(data)
 
             return JsonResponse({})
         except:
@@ -67,8 +75,23 @@ def delivery(request):
 
 
 def checkout(request):
+    cart = Cart(request)
+
+    composites = []
+    services = []
+    for item in cart:
+        if item.type == 1 or item.type == 2:
+            composite = dict()
+            composite['id'] = item.id
+            composite['type'] = CompositeType.objects.get(id=item.type)
+            composite['sheet_type'] = CompositeSheetType.objects.get(id=item.sheet_type)
+            composite['square'] = item.square
+            composites.append(composite)
+
     context = {
-        "page": "checkout"
+        "page": "checkout",
+        "cart": cart,
+        "composites": composites
     }
     return render(request, 'checkout.html', context=context)
 

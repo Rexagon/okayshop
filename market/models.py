@@ -165,15 +165,6 @@ class Cart(models.Model):
         return str(self.creation_date)
 
 
-class ItemManager(models.Manager):
-    def get(self, *args, **kwargs):
-        if "product" in kwargs:
-            kwargs["content_type"] = ContentType.objects.get_for_model(type(kwargs["product"]))
-            kwargs["object_id"] = kwargs['product'].pk
-            del(kwargs["product"])
-        return super(ItemManager, self).get(*args, **kwargs)
-
-
 class Item(models.Model):
     cart = models.ForeignKey(Cart, verbose_name="cart")
 
@@ -184,12 +175,6 @@ class Item(models.Model):
     coating_main = models.IntegerField()
     coating_additional = models.IntegerField()
     stained = models.BooleanField()
-
-    # product as generic relation
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-
-    objects = ItemManager()
 
     class Meta:
         verbose_name = 'item'

@@ -40,13 +40,13 @@ class Cart:
         item = models.Item()
         item.cart = self.cart
 
-        item.type = product['type']
-        item.sheet_type = product['sheet_type']
-        item.texture = product['texture']
-        item.square = product['square']
-        item.coating_main = product['coating_main']
-        item.coating_additional = product['coating_additional']
-        item.stained = product['stained']
+        item.type = product[u'type']
+        item.sheet_type = product[u'sheet_type']
+        item.texture = product[u'texture']
+        item.square = product[u'square']
+        item.coating_main = product[u'coating_main']
+        item.coating_additional = product[u'coating_additional']
+        item.stained = product[u'stained']
 
         item.save()
 
@@ -64,13 +64,13 @@ class Cart:
     def count(self):
         result = 0
         for item in self.cart.item_set.all():
-            result += 1 * item.quantity
+            result += 1
         return result
 
     def summary(self):
         result = 0
         for item in self.cart.item_set.all():
-            result += item.total_price
+            result += 0
         return result
 
     def clear(self):

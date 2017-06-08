@@ -254,7 +254,7 @@
 
                     console.log(data);
 
-                    $.post('/order', data, function (res) {
+                    $.post('/order', JSON.stringify(data), function (res) {
                         if (res.err) {
                             alert('Произошла ошибка');
                         }

@@ -7,7 +7,51 @@
     <div class="container">
         <div class="content">
             <div class="row">
+                <div class="col-md-12">
+                    <div class="title"><span>Моя корзина</span></div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-cart">
+                            <thead>
+                                <tr>
+                                    <th width="30%">Название</th>
+                                    <th>Тип листа</th>
+                                    <th>Площадь</th>
+                                    <th style="min-width: 120px">Цена за м&sup2;</th>
+                                    <th style="min-width: 120px">Всего</th>
+                                    <th width="0%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in composites %}
+                            <tr>
+                                <td>
+                                    <p>{{ item.type }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ item.sheet_type }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ item.square }}</p>
+                                </td>
+                                <td>
 
+                                </td>
+                                <td>
+
+                                </td>
+                                <td class="action">
+                                    <a href="/order/remove/{{ item.id }}" class="text-danger" data-toggle="tooltip" data-placement="top" data-original-title="Удалить"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="4" class="text-right">Итого</td>
+                                <td colspan="2"><b>{{ cart.summary }} руб.</b></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
