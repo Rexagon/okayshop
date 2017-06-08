@@ -133,9 +133,8 @@
                                             </label>
                                         </div>
                                         <hr>
-                                        <div class="checkbox"><label><input id="stained" type="checkbox"><span> Покрытие лаком</span></label></div>
                                     </div>
-                                    <div class="checkbox"><label><input id="stained" type="checkbox"><span> Глянец</span></label></div>
+                                    <div class="checkbox"><label><input id="stained" type="checkbox"><span id="stained-label"> Глянец</span></label></div>
                                 </td>
                             </tr>
 	                        <tr>
@@ -171,6 +170,13 @@
 
                 $('#coating-additional-wrapper').toggle(group != 1);
                 $('#coating-additional-wood').toggle(group == 2);
+                if (group == 1) {
+                    $('#stained-label').html(' Глянец');
+                }
+                else {
+                    $('#stained-label').html(' Покрытие лаком');
+                }
+
                 $('input[name="coating-additional"]:first').click();
             });
 
