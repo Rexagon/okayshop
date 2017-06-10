@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import json
+from decimal import Decimal
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from market.cart import Cart
-from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup
+from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup, Texture
 
 
 def main(request):
@@ -83,9 +85,60 @@ def checkout(request):
         if item.type == 1 or item.type == 2:
             composite = dict()
             composite['id'] = item.id
-            composite['type'] = CompositeType.objects.get(id=item.type)
-            composite['sheet_type'] = CompositeSheetType.objects.get(id=item.sheet_type)
-            composite['square'] = item.square
+
+            price = 0
+            coatings = ''
+            if item.coating_main == 1:
+                coatings += u'Покрытие PE'
+                price += 0
+            elif item.coating_main == 2:
+                coatings += u'Покрытие PVDF'
+                price += 70
+
+            if item.coating_additional != 0:
+                coatings += u'<br>'
+                if item.coating_additional == 1:
+                    coatings += u'Текстурное покрытие на основе УФ-отверждаемых полимеров'
+                    price += 500
+                elif item.coating_additional == 2:
+                    coatings += u'Текстурное покрытие на основе ПЭТ'
+                    price += 350
+                elif item.coating_additional == 3:
+                    coatings += u'Крашеное покрытие'
+                    price += 200
+
+            if item.stained:
+                coatings += u'<br>'
+                if item.coating_additional != 0:
+                    coatings += u'Покрытие лаком'
+                else:
+                    coatings += u'Глянец'
+                price += 150
+
+            sheet_type = CompositeSheetType.objects.get(id=item.sheet_type)
+            square = item.square
+
+            gradations = []
+            if sheet_type.price_huge:
+                gradations = [500, 1000, 3000]
+            else:
+                gradations = [100, 500, 1000]
+
+            if square < gradations[0]:
+                price += sheet_type.price_low
+            elif gradations[0] <= square < gradations[1]:
+                price += sheet_type.price_middle
+            elif gradations[1] <= square < gradations[2]:
+                price += sheet_type.price_high
+            else:
+                price += sheet_type.price_huge
+
+            composite['price'] = price
+            composite['total'] = Decimal(square) * price
+            composite['texture'] = Texture.objects.get(id=item.texture).name
+            composite['coatings'] = coatings
+            composite['sheet_type'] = sheet_type
+            composite['square'] = square
             composites.append(composite)
 
     context = {

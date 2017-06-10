@@ -13,11 +13,12 @@
                         <table class="table table-bordered table-cart">
                             <thead>
                                 <tr>
-                                    <th width="30%">Название</th>
                                     <th>Тип листа</th>
-                                    <th>Площадь</th>
-                                    <th style="min-width: 120px">Цена за м&sup2;</th>
-                                    <th style="min-width: 120px">Всего</th>
+                                    <th>Покрытия</th>
+                                    <th>Текстура</th>
+                                    <th>Площадь, м&sup2;</th>
+                                    <th style="min-width: 120px">Цена за м&sup2;, руб.</th>
+                                    <th style="min-width: 120px">Всего, руб.</th>
                                     <th width="0%"></th>
                                 </tr>
                             </thead>
@@ -25,19 +26,22 @@
                             {% for item in composites %}
                             <tr>
                                 <td>
-                                    <p>{{ item.type }}</p>
+                                    <p>{{ item.sheet_type }}</p>
                                 </td>
                                 <td>
-                                    <p>{{ item.sheet_type }}</p>
+                                    <p>{{ item.coatings|safe }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ item.texture }}</p>
                                 </td>
                                 <td>
                                     <p>{{ item.square }}</p>
                                 </td>
                                 <td>
-
+                                    <p>{{ item.price }}</p>
                                 </td>
                                 <td>
-
+                                    <p>{{ item.total }}</p>
                                 </td>
                                 <td class="action">
                                     <a href="/order/remove/{{ item.id }}" class="text-danger" data-toggle="tooltip" data-placement="top" data-original-title="Удалить"><i class="fa fa-trash-o"></i></a>
@@ -45,7 +49,7 @@
                             </tr>
                             {% endfor %}
                             <tr>
-                                <td colspan="4" class="text-right">Итого</td>
+                                <td colspan="5" class="text-right">Итого</td>
                                 <td colspan="2"><b>{{ cart.summary }} руб.</b></td>
                             </tr>
                             </tbody>
