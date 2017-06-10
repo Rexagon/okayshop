@@ -5,6 +5,8 @@ from decimal import Decimal
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from math import ceil
+
 from market.cart import Cart
 from market.models import SliderImage, Service, CompositeType, CompositeSheetType, TexturesGroup, Texture
 
@@ -118,6 +120,10 @@ def checkout(request):
 
             sheet_type = CompositeSheetType.objects.get(id=item.sheet_type)
             square = item.square
+
+            sheet_square = sheet_type.width * sheet_type.length / 1000000.0
+
+            square = sheet_square * ceil(square / sheet_square)
 
             gradations = []
             if sheet_type.price_huge:
