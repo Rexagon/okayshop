@@ -224,6 +224,8 @@
             });
 
             $('#product-add').on('click', function () {
+                $(this).prop('disabled', true);
+
                 var composite_type = {{ composite.id }};
                 var sheet_type = parseInt($('#sheet-type').val());
                 var square = parseInt($('#square').val());
@@ -259,7 +261,7 @@
                             alert('Произошла ошибка');
                         }
                         else {
-
+                            window.location.href = '/checkout/';
                         }
                     });
                 }

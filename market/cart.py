@@ -50,14 +50,15 @@ class Cart:
 
         item.save()
 
-    def remove(self, type):
+    def remove(self, id):
         try:
             item = models.Item.objects.get(
                 cart=self.cart,
-                type=type,
+                id=id
             )
         except models.Item.DoesNotExist:
-            raise ItemDoesNotExist
+            # raise ItemDoesNotExist
+            pass
         else:
             item.delete()
 

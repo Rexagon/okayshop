@@ -81,6 +81,7 @@ def checkout(request):
 
     composites = []
     services = []
+    total = 0
     for item in cart:
         if item.type == 1 or item.type == 2:
             composite = dict()
@@ -96,7 +97,7 @@ def checkout(request):
                 price += 70
 
             if item.coating_additional != 0:
-                coatings += u'<br>'
+                coatings += u',<br>'
                 if item.coating_additional == 1:
                     coatings += u'Текстурное покрытие на основе УФ-отверждаемых полимеров'
                     price += 500
@@ -108,7 +109,7 @@ def checkout(request):
                     price += 200
 
             if item.stained:
-                coatings += u'<br>'
+                coatings += u',<br>'
                 if item.coating_additional != 0:
                     coatings += u'Покрытие лаком'
                 else:
@@ -135,6 +136,7 @@ def checkout(request):
 
             composite['price'] = price
             composite['total'] = Decimal(square) * price
+            total += composite['total']
             composite['texture'] = Texture.objects.get(id=item.texture).name
             composite['coatings'] = coatings
             composite['sheet_type'] = sheet_type
@@ -144,9 +146,16 @@ def checkout(request):
     context = {
         "page": "checkout",
         "cart": cart,
+        "total": total,
         "composites": composites
     }
     return render(request, 'checkout.html', context=context)
+
+
+def handle_order_remove(request, id):
+    cart = Cart(request)
+    cart.remove(id)
+    return redirect('/checkout/')
 
 
 def contacts(request):
