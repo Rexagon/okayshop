@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from market.views import main, products, services, delivery, checkout, contacts, order, message, handle_order, \
-    handle_order_remove
+    handle_order_remove, handle_checkout
 
 urlpatterns = [
     url(r'^$', main, name="main"),
