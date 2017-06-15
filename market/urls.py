@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^services/?$', services, name="services"),
     url(r'^delivery/?$', delivery, name="delivery"),
     url(r'^checkout/?$', checkout, name="checkout"),
+    url(r'^checkout/order/?$', handle_checkout, name="handle_checkout"),
     url(r'^contacts/?$', contacts, name="contacts"),
 
     #stuff urls

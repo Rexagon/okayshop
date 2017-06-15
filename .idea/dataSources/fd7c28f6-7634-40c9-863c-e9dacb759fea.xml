@@ -684,6 +684,7 @@ model</ColNames>
     <column id="157" parent="21" name="price_huge">
       <Position>10</Position>
       <DataType>decimal(10,2)|0</DataType>
+      <NotNull>1</NotNull>
     </column>
     <index id="158" parent="21" name="market_com_composite_type_id_47bd643d_fk_market_compositetype_id">
       <ColNames>composite_type_id</ColNames>

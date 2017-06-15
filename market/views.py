@@ -174,6 +174,14 @@ def contacts(request):
 # stuff functions
 
 @csrf_exempt
+def handle_checkout(request):
+    if request.method == "POST"
+        cart = Cart(request)
+        cart.clear()
+        return JsonResponse({})
+
+
+@csrf_exempt
 def message(request):
     if request.method == "POST":
 

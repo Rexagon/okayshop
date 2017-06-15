@@ -100,3 +100,27 @@
         </div>
     </div>
 {% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#checkout').on('click', function (e) {
+                e.preventDefault();
+                $(this).prop("disabled", true);
+                var name = $('#name').val();
+                var phone = $('#phone').val();
+                var message = $('#message').val();
+                if (name.length > 1 && phone.length > 6) {
+                    $.post('/checkout/order', {name: name, phone: phone, message: message}, function(res) {
+                        if (!res.err) {
+                            alert('Спасибо за заказ! Мы скоро позвоним вам.');
+                            location.reload(true);
+                        }
+                    });
+                } else {
+                    alert('Заполните все поля!');
+                    $(this).prop("disabled", false);
+                }
+            });
+        });
+    </script>
+{% endblock %}
