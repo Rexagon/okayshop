@@ -98,4 +98,5 @@ local_settings.py
 # Dev
 assets
 Thumbs.db
-static
+static/admin
+static/media
