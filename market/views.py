@@ -141,7 +141,7 @@ def checkout(request):
                 price += sheet_type.price_huge
 
             composite['price'] = price
-            composite['total'] = Decimal(square) * price
+            composite['total'] = float("{0:.2f}".format((Decimal(square) * price)))
             total += composite['total']
             composite['texture'] = Texture.objects.get(id=item.texture)
             composite['coatings'] = coatings

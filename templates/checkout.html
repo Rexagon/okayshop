@@ -41,7 +41,7 @@
                                     <p>{{ item.price }}</p>
                                 </td>
                                 <td>
-                                    <p>{{ item.total }}</p>
+                                    <p>{{ item.total|floatformat:-2 }}</p>
                                 </td>
                                 <td class="action">
                                     <a href="/order/remove/{{ item.id }}" class="text-danger" data-toggle="tooltip" data-placement="top" data-original-title="Удалить"><i class="fa fa-trash-o"></i></a>
@@ -50,7 +50,7 @@
                             {% endfor %}
                             <tr>
                                 <td colspan="5" class="text-right">Итого</td>
-                                <td colspan="2"><b>{{ total }} руб.</b></td>
+                                <td colspan="2"><b>{{ total|floatformat:-2 }} руб.</b></td>
                             </tr>
                             </tbody>
                         </table>
@@ -80,7 +80,7 @@
                                 <div class="form-group col-sm-6">
                                     <hr>
                                     <label>Товаров в корзине:</label> {{ cart.count }}<br>
-                                    <label>На сумму:</label> {{ total }} руб.
+                                    <label>На сумму:</label> {{ total|floatformat:-2 }} руб.
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <hr>
