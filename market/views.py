@@ -2,8 +2,10 @@
 import json
 from decimal import Decimal
 
+from django.core.mail import EmailMessage
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from math import ceil
 
@@ -177,14 +179,152 @@ def contacts(request):
 def handle_checkout(request):
     if request.method == "POST":
         cart = Cart(request)
-        cart.clear()
-        return JsonResponse({})
+
+        # try:
+        name = escape(request.POST[u'name'])
+        email = escape(request.POST[u'email'])
+
+        message = u''
+        if u'message' in request.POST[u'message']:
+            message = request.POST[u'message']
+
+        text = u'Имя: ' + name + u'<br>E-mail: ' + email + u'<br>Доп. информация: ' + message + u'<hr><br>'
+        text += u'<table border="1">\
+             <thead>\
+                <tr>\
+                    <th>Тип листа</th>\
+                    <th>Покрытия</th>\
+                    <th>Текстура</th>\
+                    <th>Площадь*, м&sup2;</th>\
+                    <th style="min-width: 120px">Цена за м&sup2;, руб.</th>\
+                    <th style="min-width: 120px">Всего, руб.</th>\
+                </tr>\
+            </thead>\
+            <tbody>'
+
+        cart = Cart(request)
+        services = []
+        total = 0
+        for item in cart:
+            if item.type == 1 or item.type == 2:
+                composite = dict()
+                composite['id'] = item.id
+
+                price = 0
+                coatings = ''
+                if item.coating_main == 1:
+                    coatings += u'Покрытие PE'
+                    price += 0
+                elif item.coating_main == 2:
+                    coatings += u'Покрытие PVDF'
+                    price += 70
+
+                if item.coating_additional != 0:
+                    coatings += u',<br>'
+                    if item.coating_additional == 1:
+                        coatings += u'Текстурное покрытие на основе УФ-отверждаемых полимеров'
+                        price += 500
+                    elif item.coating_additional == 2:
+                        coatings += u'Текстурное покрытие на основе ПЭТ'
+                        price += 350
+                    elif item.coating_additional == 3:
+                        coatings += u'Крашеное покрытие'
+                        price += 200
+
+                if item.stained:
+                    coatings += u',<br>'
+                    if item.coating_additional != 0:
+                        coatings += u'Покрытие лаком'
+                    else:
+                        coatings += u'Глянец'
+                    price += 150
+
+                sheet_type = CompositeSheetType.objects.get(id=item.sheet_type)
+                square = item.square
+
+                sheet_square = sheet_type.width * sheet_type.length / 1000000.0
+
+                square = sheet_square * ceil(square / sheet_square)
+
+                gradations = []
+                if sheet_type.price_huge:
+                    gradations = [500, 1000, 3000]
+                else:
+                    gradations = [100, 500, 1000]
+
+                if square < gradations[0]:
+                    price += sheet_type.price_low
+                elif gradations[0] <= square < gradations[1]:
+                    price += sheet_type.price_middle
+                elif gradations[1] <= square < gradations[2]:
+                    price += sheet_type.price_high
+                else:
+                    price += sheet_type.price_huge
+
+                composite['price'] = price
+                composite['total'] = float(u"{0:.2f}".format((Decimal(square) * price)))
+                total += composite['total']
+                composite['texture'] = Texture.objects.get(id=item.texture)
+                composite['coatings'] = coatings
+                composite['sheet_type'] = sheet_type
+                composite['square'] = square
+
+                text += u'<tr>\
+                    <td>\
+                        <p>' + str(sheet_type).decode('utf8') + u'</p>\
+                    </td>\
+                    <td>\
+                        <p>' + coatings + u'</p>\
+                    </td>\
+                    <td>\
+                        <p><img style="width: 50px; float: left; margin-right: 8px;" src="http://aluminiumcomposite.ru/static/media/' + composite['texture'].image.name.decode('utf8') + u'"> ' + composite['texture'].name.decode('utf8') + u'</p>\
+                    </td>\
+                    <td>\
+                        <p>' + str(composite['square']).decode('utf8') + u' (' + str(item.square).decode('utf8') + u') [' + str(ceil(square / sheet_square)).decode('utf-8') + u' листов]</p>\
+                    </td>\
+                    <td>\
+                        <p>' + str(price).decode('utf8') + u'</p>\
+                    </td>\
+                    <td>\
+                        <p>' + str(composite['total']).decode('utf8') + u'</p>\
+                    </td>\
+                </tr>'
+
+        text += u'<tr><td colspan="4"></td><td>Итого:</td><td>' + str(total).decode('utf8') + u' руб.</td><tbody></table><br>'
+
+        msg = EmailMessage(u'Заказ', text, 'mailer@live-to-create.com',
+                               ['info@okay-agency.ru'])
+        msg.content_subtype = "html"
+        if msg.send() > 0:
+            cart.clear()
+            return JsonResponse({})
+        else:
+            raise Exception
+        # except:
+        #     return JsonResponse({'err': True})
+    else:
+        return redirect('/')
 
 
 @csrf_exempt
 def message(request):
     if request.method == "POST":
+        try:
+            name = escape(request.POST[u'name'])
+            email = escape(request.POST[u'email'])
+            message = escape(request.POST[u'message'])
 
-        return JsonResponse({})
+            text = u'Имя: ' + name + u'<br>E-mail: ' + email + u'<hr>Сообщение: ' + message + u'<br><br>'
+
+            msg = EmailMessage(u'aluminiumcomposite.ru | Вопрос', text, 'mailer@live-to-create.com',
+                               ['info@okay-agency.ru'])
+
+            msg.content_subtype = "html"
+            if msg.send() > 0:
+                return JsonResponse({})
+            else:
+                raise Exception
+        except:
+            return JsonResponse({'err': True})
     else:
         return redirect('/')
