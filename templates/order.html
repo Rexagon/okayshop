@@ -228,16 +228,18 @@
 
                 var composite_type = {{ composite.id }};
                 var sheet_type = parseInt($('#sheet-type').val());
-                var square = parseInt($('#square').val());
+                var square = parseFloat($('#square').val());
                 var coatingMain = parseInt($('input[name="coating-main"]:checked').val());
                 var coatingAdditional = parseInt($('input[name="coating-additional"]:checked').val());
                 var stained = $('#stained').is(":checked");
 
                 if (!square) {
                     alert('Укажите площадь');
+                    $(this).prop('disabled', false);
                 }
                 else if (!currentImageId) {
                     alert('Выберите текстуру');
+                    $(this).prop('disabled', false);
                 }
                 else {
                     var data = {
@@ -259,6 +261,7 @@
                     $.post('/order', JSON.stringify(data), function (res) {
                         if (res.err) {
                             alert('Произошла ошибка');
+                            $(this).prop('disabled', false);
                         }
                         else {
                             window.location.href = '/checkout/';

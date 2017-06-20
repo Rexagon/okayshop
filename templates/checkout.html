@@ -32,7 +32,7 @@
                                     <p>{{ item.coatings|safe }}</p>
                                 </td>
                                 <td>
-                                    <p>{{ item.texture }}</p>
+                                    <p><img style="width: 50px; float: left; margin-right: 8px;" src="/static/media/{{ item.texture.image }}"> {{ item.texture.name }}</p>
                                 </td>
                                 <td>
                                     <p>{{ item.square }}</p>
@@ -61,7 +61,7 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    <div class="title"><span>Заказ</span></div>
+                    <div class="title"><span>Оформление заказа</span></div>
                         <form class="checkout-form">
                             <div class="row">
                                 <div class="form-group col-sm-6">
@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <hr>
-                                    <button id="checkout" class="btn btn-theme pull-right">Отправить</button>
+                                    <button id="checkout" class="btn btn-theme pull-right">Завершить оформление</button>
                                 </div>
                                 {% else %}
                                 <div class="form-group col-sm-6">

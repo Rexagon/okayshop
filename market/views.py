@@ -143,7 +143,7 @@ def checkout(request):
             composite['price'] = price
             composite['total'] = Decimal(square) * price
             total += composite['total']
-            composite['texture'] = Texture.objects.get(id=item.texture).name
+            composite['texture'] = Texture.objects.get(id=item.texture)
             composite['coatings'] = coatings
             composite['sheet_type'] = sheet_type
             composite['square'] = square
