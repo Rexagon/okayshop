@@ -168,7 +168,8 @@ def checkout(request):
         "page": "checkout",
         "cart": cart,
         "total": total,
-        "composites": composites
+        "composites": composites,
+        "services": Service.objects.all()
     }
     return render(request, 'checkout.html', context=context)
 
@@ -198,7 +199,7 @@ def handle_checkout(request):
         email = escape(request.POST[u'email'])
 
         message = u''
-        if u'message' in request.POST[u'message']:
+        if u'message' in request.POST:
             message = request.POST[u'message']
 
         text = u'Имя: ' + name + u'<br>E-mail: ' + email + u'<br>Доп. информация: ' + message + u'<hr><br>'
@@ -312,6 +313,16 @@ def handle_checkout(request):
                 </tr>'
 
         text += u'<tr><td colspan="4"></td><td>Итого:</td><td>' + str(total).decode('utf8') + u' руб.</td><tbody></table><br>'
+
+        if u'services[]' in request.POST and len(request.POST.getlist(u'services[]')) > 0:
+            print request.POST.getlist(u'services[]')
+            text += u'<br><b>Услуги:</b><br>'
+            for service_id in request.POST.getlist(u'services[]'):
+                try:
+                    service = Service.objects.get(id=int(service_id))
+                    text += u'&nbsp;&nbsp;&nbsp;&nbsp;' + service.name + u'<br>'
+                except:
+                    pass
 
         msg = EmailMessage(u'Заказ', text, 'mailer@live-to-create.com',
                                ['info@okay-agency.ru'])

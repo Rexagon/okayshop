@@ -15,7 +15,7 @@
             <hr>
             <div class="row">
                 {% for service in services %}
-                <div class="col-md-4 box-outer box-service">
+                <div class="col-md-4 box-outer box-service" style="cursor: pointer" data-title="{{ service.name }}" data-description="{{ service.full_description }}" data-image="{{ service.image }}">
                     <div class="title"><span>{{ service.name }}</span></div>
                     {{ service.short_description|safe }}
                 </div>
@@ -23,4 +23,40 @@
             </div>
         </div>
     </div>
+
+    <div id="modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" id="modal-image" style="float: right; max-width: 200px; display: block;">
+                    <p id="modal-body"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <!--<button type="button" class="btn btn-theme" id="order-service" data-dismiss="modal">Заказать</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $('.box-service').click(function () {
+                $('#modal-title').html($(this).attr('data-title'));
+                $('#modal-image').attr('src', '/static/media/' + $(this).attr('data-image'));
+                $('#modal-body').html($(this).attr('data-description'));
+                $('#modal').modal('show');
+           });
+
+           $('#order-service').on('click', function () {
+               $(this).prop('disabled', true);
+           });
+        });
+    </script>
 {% endblock %}

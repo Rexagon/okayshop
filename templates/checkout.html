@@ -56,7 +56,16 @@
                         </table>
                     </div>
                 * - Суммарная площадь всех листов. Может быть чуть больше чем указанная ранее.
-                <br><br><br>
+                <br><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="title"><span>Услуги</span></div>
+                    {% for service in services %}
+                    <div class="checkbox"><label><input class="service" type="checkbox" value="{{ service.id }}"><span> {{ service.name }}</span></label></div>
+                    {% endfor %}
+                    <br><br><br>
                 </div>
             </div>
             <div class="row">
@@ -109,8 +118,11 @@
                 var name = $('#name').val();
                 var email = $('#email').val();
                 var message = $('#message').val();
+                var services = $('.service:checked').map(function () {
+                    return $(this).val();
+                }).get();
                 if (name.length > 1 && email.length > 3) {
-                    $.post('/checkout/order', {name: name, email: email, message: message}, function(res) {
+                    $.post('/checkout/order', {name: name, email: email, message: message, services: services}, function(res) {
                         if (!res.err) {
                             alert('Спасибо за заказ! Мы скоро напишем вам.');
                             location.reload(true);
