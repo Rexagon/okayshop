@@ -35,10 +35,10 @@
                                     <p><img style="width: 50px; float: left; margin-right: 8px;" src="/static/media/{{ item.texture.image }}"> {{ item.texture.name }}</p>
                                 </td>
                                 <td>
-                                    <p>{{ item.square }}</p>
+                                    <p>{{ item.square|floatformat:-2 }} ({{ item.sheet_count }})</p>
                                 </td>
                                 <td>
-                                    <p>{{ item.price }}</p>
+                                    <p>{{ item.price|floatformat:-2 }}</p>
                                 </td>
                                 <td>
                                     <p>{{ item.total|floatformat:-2 }}</p>

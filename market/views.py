@@ -96,7 +96,7 @@ def checkout(request):
             if item.coating_main == 1:
                 coatings += u'Покрытие PE'
                 price += 0
-            elif item.coating_main == 2:
+            else: # item.coating_main == 2:
                 coatings += u'Покрытие PVDF'
                 price += 70
 
@@ -112,6 +112,14 @@ def checkout(request):
                     coatings += u'Крашеное покрытие'
                     price += 200
 
+            item_texture = Texture.objects.get(id=item.texture)
+            if item_texture.name == 'GRC-0005 brushed':
+                coatings += u',<br>Цвет "Царапаное серебро"'
+                price += 300
+            elif item_texture.name == 'GRC-0007 silver mirror' or item_texture.name == 'GRC-0008 gold mirror':
+                coatings += u',<br>Зеркальное покрытие'
+                price += 750
+
             if item.stained:
                 coatings += u',<br>'
                 if item.coating_additional != 0:
@@ -124,8 +132,12 @@ def checkout(request):
             square = item.square
 
             sheet_square = sheet_type.width * sheet_type.length / 1000000.0
+            sheet_count = int(ceil(square / sheet_square))
+            square = sheet_square * sheet_count
 
-            square = sheet_square * ceil(square / sheet_square)
+            titles = ['лист', 'листа', 'листов']
+            cases = [2, 0, 1, 1, 1, 2]
+            sheet = titles[2 if 4 < sheet_count % 100 < 20 else cases[sheet_count % 10 if sheet_count % 10 < 5 else 5]]
 
             gradations = []
             if sheet_type.price_huge:
@@ -145,10 +157,11 @@ def checkout(request):
             composite['price'] = price
             composite['total'] = float("{0:.2f}".format((Decimal(square) * price)))
             total += composite['total']
-            composite['texture'] = Texture.objects.get(id=item.texture)
+            composite['texture'] = item_texture
             composite['coatings'] = coatings
             composite['sheet_type'] = sheet_type
             composite['square'] = square
+            composite['sheet_count'] = str(sheet_count) + ' ' + sheet
             composites.append(composite)
 
     context = {
@@ -230,6 +243,14 @@ def handle_checkout(request):
                     elif item.coating_additional == 3:
                         coatings += u'Крашеное покрытие'
                         price += 200
+
+                item_texture = Texture.objects.get(id=item.texture)
+                if item_texture.name == 'GRC-0005 brushed':
+                    coatings += u',<br>Цвет "Царапаное серебро"'
+                    price += 300
+                elif item_texture.name == 'GRC-0007 silver mirror' or item_texture.name == 'GRC-0008 gold mirror':
+                    coatings += u',<br>Зеркальное покрытие'
+                    price += 750
 
                 if item.stained:
                     coatings += u',<br>'
