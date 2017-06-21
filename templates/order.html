@@ -21,7 +21,7 @@
                             <br>
                             <div style="padding-right: 10px">
                                 {% for texture in texture_group.textures %}
-                                    <div id="texture-{{ texture.id }}" data-id="{{ texture.id }}" data-name="{{ texture.name }}" data-group="{{ texture_group.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
+                                    <div id="texture-{{ texture.id }}" data-id="{{ texture.id }}" data-name="{{ texture.name }}" data-big="{{ texture.big_image }}" data-group="{{ texture_group.id }}" class="texture"><img src="/static/media/{{ texture.image }}" alt="{{ texture.name }}" width="100%"></div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                 $('.selected').removeClass('selected');
                 $(this).addClass('selected');
                 currentImageId = $(this).attr('data-id');
-                var html = "Выбранная текстура: <img src=\"" + $(this).find('img').attr('src') + "\" width=\"200px\">";
+                var html = "Выбранная текстура: <img src=\"/static/media/" + $(this).attr('data-big') + "\" width=\"250px\">";
                 html += "<br><br>Артикул: <b>" + $(this).attr('data-name') + "</b>";
                 $($('.sheet-texture-wrapper')[0]).html(html);
                 currentGroup = parseInt($(this).attr('data-group'));
