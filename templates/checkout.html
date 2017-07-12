@@ -57,7 +57,7 @@
                     </div>
                 * - Суммарная площадь всех листов. Может быть чуть больше чем указанная ранее.
                 <br><br>Расчёт является предварительным. Точный расчёт производится нашими специалистами после окончательного согласования заказа.
-                <br><br>
+                <br><br><br>
                 </div>
             </div>
             <div class="row">
@@ -66,24 +66,44 @@
                     {% for service in services %}
                     <div class="checkbox"><label><input class="service" type="checkbox" value="{{ service.id }}"><span> {{ service.name }}</span></label></div>
                     {% endfor %}
-                    <br><br><br>
+                    <br><br>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    <div class="title"><span>Оформление заказа</span></div>
+                    <div class="title"><span>Информация о покупателе</span></div>
                         <form class="checkout-form">
                             <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <label for="name">Ваше имя (*)</label>
-                                    <input type="text" class="form-control" id="name">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="contact-person">Контактное лицо (*)</label>
+                                        <input type="text" class="form-control" id="contact-person">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Эл. почта (*)</label>
+                                        <input type="email" class="form-control" id="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Телефон (*)</label>
+                                        <input type="tel" class="form-control" id="phone">
+                                    </div>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="email">Эл. почта (*)</label>
-                                    <input type="email" class="form-control" id="email">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company">Название компании (*)</label>
+                                        <input type="text" class="form-control" id="company">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inn">ИНН</label>
+                                        <input type="text" class="form-control" id="inn">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Юридический адрес</label>
+                                        <textarea class="form-control" rows="3" id="address"></textarea>
+                                    </div>
                                 </div>
                                 <div class="form-group col-sm-12">
-                                    <label for="address">Доп. информация</label>
+                                    <label for="message">Доп. информация</label>
                                     <textarea class="form-control" rows="3" id="message"></textarea>
                                 </div>
                                 {% if total > 0 %}
@@ -97,7 +117,7 @@
                                     <button id="checkout" class="btn btn-theme pull-right">Завершить оформление</button>
                                 </div>
                                 {% else %}
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-12">
                                     <hr>
                                     В вашей корзине ещё нет товаров.
                                 </div>
@@ -116,14 +136,29 @@
             $('#checkout').on('click', function (e) {
                 e.preventDefault();
                 $(this).prop("disabled", true);
-                var name = $('#name').val();
+                var contact_person = $('#contact-person').val();
                 var email = $('#email').val();
+                var phone = $('#phone').val();
+
+                var company = $('#company').val();
+                var inn = $('#inn').val();
+                var address = $('#address').val();
+
                 var message = $('#message').val();
                 var services = $('.service:checked').map(function () {
                     return $(this).val();
                 }).get();
-                if (name.length > 1 && email.length > 3) {
-                    $.post('/checkout/order', {name: name, email: email, message: message, services: services}, function(res) {
+                if (contact_person.length > 1 && email.length > 3 && phone.length > 5 && company.length > 1) {
+                    $.post('/checkout/order', {
+                        contact_person: contact_person,
+                        email: email,
+                        phone: phone,
+                        company: company,
+                        inn: inn,
+                        address: address,
+                        message: message,
+                        services: services
+                    }, function(res) {
                         if (!res.err) {
                             alert('Спасибо за заказ! Мы скоро напишем вам.');
                             location.reload(true);

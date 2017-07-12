@@ -194,146 +194,163 @@ def handle_checkout(request):
     if request.method == "POST":
         cart = Cart(request)
 
-        # try:
-        name = escape(request.POST[u'name'])
-        email = escape(request.POST[u'email'])
+        try:
+            contact_person = escape(request.POST[u'contact_person'])
+            email = escape(request.POST[u'email'])
+            phone = escape(request.POST[u'phone'])
 
-        message = u''
-        if u'message' in request.POST:
-            message = request.POST[u'message']
+            company = escape(request.POST[u'company'])
 
-        text = u'Имя: ' + name + u'<br>E-mail: ' + email + u'<br>Доп. информация: ' + message + u'<hr><br>'
-        text += u'<table border="1">\
-             <thead>\
-                <tr>\
-                    <th>Тип листа</th>\
-                    <th>Покрытия</th>\
-                    <th>Текстура</th>\
-                    <th>Площадь*, м&sup2;</th>\
-                    <th style="min-width: 120px">Цена за м&sup2;, руб.</th>\
-                    <th style="min-width: 120px">Всего, руб.</th>\
-                </tr>\
-            </thead>\
-            <tbody>'
+            inn = u''
+            if u'inn' in request.POST:
+                inn = escape(request.POST[u'inn'])
 
-        cart = Cart(request)
-        services = []
-        total = 0
-        for item in cart:
-            if item.type == 1 or item.type == 2:
-                composite = dict()
-                composite['id'] = item.id
+            address = u''
+            if u'address':
+                address = escape(request.POST[u'address'])
 
-                price = 0
-                coatings = ''
-                if item.coating_main == 1:
-                    coatings += u'Покрытие PE'
-                    price += 0
-                elif item.coating_main == 2:
-                    coatings += u'Покрытие PVDF'
-                    price += 70
+            message = u''
+            if u'message' in request.POST:
+                message = request.POST[u'message']
 
-                if item.coating_additional != 0:
-                    coatings += u',<br>'
-                    if item.coating_additional == 1:
-                        coatings += u'Текстурное покрытие на основе УФ-отверждаемых полимеров'
-                        price += 500
-                    elif item.coating_additional == 2:
-                        coatings += u'Текстурное покрытие на основе ПЭТ'
-                        price += 350
-                    elif item.coating_additional == 3:
-                        coatings += u'Крашеное покрытие'
-                        price += 200
+            text = u'Название компании: ' + company + u'<br>'
+            text += u'Юридический адрес: ' + address + u'<br>'
+            text += u'ИНН: ' + inn + u'<br>'
+            text += u'Контактное лицо: ' + contact_person + u'<br>'
+            text += u'E-mail: ' + email + u'<br>'
+            text += u'Телефон: ' + phone + u'<br>'
+            text += u'Доп. информация: ' + message + u'<hr><br>'
+            text += u'<table border="1">\
+                 <thead>\
+                    <tr>\
+                        <th>Тип листа</th>\
+                        <th>Покрытия</th>\
+                        <th>Текстура</th>\
+                        <th>Площадь*, м&sup2;</th>\
+                        <th style="min-width: 120px">Цена за м&sup2;, руб.</th>\
+                        <th style="min-width: 120px">Всего, руб.</th>\
+                    </tr>\
+                </thead>\
+                <tbody>'
 
-                item_texture = Texture.objects.get(id=item.texture)
-                if item_texture.name == 'GRC-0005 brushed':
-                    coatings += u',<br>Цвет "Царапаное серебро"'
-                    price += 300
-                elif item_texture.name == 'GRC-0007 silver mirror' or item_texture.name == 'GRC-0008 gold mirror':
-                    coatings += u',<br>Зеркальное покрытие'
-                    price += 750
+            cart = Cart(request)
+            services = []
+            total = 0
+            for item in cart:
+                if item.type == 1 or item.type == 2:
+                    composite = dict()
+                    composite['id'] = item.id
 
-                if item.stained:
-                    coatings += u',<br>'
+                    price = 0
+                    coatings = ''
+                    if item.coating_main == 1:
+                        coatings += u'Покрытие PE'
+                        price += 0
+                    elif item.coating_main == 2:
+                        coatings += u'Покрытие PVDF'
+                        price += 70
+
                     if item.coating_additional != 0:
-                        coatings += u'Покрытие лаком'
+                        coatings += u',<br>'
+                        if item.coating_additional == 1:
+                            coatings += u'Текстурное покрытие на основе УФ-отверждаемых полимеров'
+                            price += 500
+                        elif item.coating_additional == 2:
+                            coatings += u'Текстурное покрытие на основе ПЭТ'
+                            price += 350
+                        elif item.coating_additional == 3:
+                            coatings += u'Крашеное покрытие'
+                            price += 200
+
+                    item_texture = Texture.objects.get(id=item.texture)
+                    if item_texture.name == 'GRC-0005 brushed':
+                        coatings += u',<br>Цвет "Царапаное серебро"'
+                        price += 300
+                    elif item_texture.name == 'GRC-0007 silver mirror' or item_texture.name == 'GRC-0008 gold mirror':
+                        coatings += u',<br>Зеркальное покрытие'
+                        price += 750
+
+                    if item.stained:
+                        coatings += u',<br>'
+                        if item.coating_additional != 0:
+                            coatings += u'Покрытие лаком'
+                        else:
+                            coatings += u'Глянец'
+                        price += 150
+
+                    sheet_type = CompositeSheetType.objects.get(id=item.sheet_type)
+                    square = item.square
+
+                    sheet_square = sheet_type.width * sheet_type.length / 1000000.0
+
+                    square = sheet_square * ceil(square / sheet_square)
+
+                    gradations = []
+                    if sheet_type.price_huge:
+                        gradations = [500, 1000, 3000]
                     else:
-                        coatings += u'Глянец'
-                    price += 150
+                        gradations = [100, 500, 1000]
 
-                sheet_type = CompositeSheetType.objects.get(id=item.sheet_type)
-                square = item.square
+                    if square < gradations[0]:
+                        price += sheet_type.price_low
+                    elif gradations[0] <= square < gradations[1]:
+                        price += sheet_type.price_middle
+                    elif gradations[1] <= square < gradations[2]:
+                        price += sheet_type.price_high
+                    else:
+                        price += sheet_type.price_huge
 
-                sheet_square = sheet_type.width * sheet_type.length / 1000000.0
+                    composite['price'] = price
+                    composite['total'] = float(u"{0:.2f}".format((Decimal(square) * price)))
+                    total += composite['total']
+                    composite['texture'] = Texture.objects.get(id=item.texture)
+                    composite['coatings'] = coatings
+                    composite['sheet_type'] = sheet_type
+                    composite['square'] = square
 
-                square = sheet_square * ceil(square / sheet_square)
+                    text += u'<tr>\
+                        <td>\
+                            <p>' + str(sheet_type).decode('utf8') + u'</p>\
+                        </td>\
+                        <td>\
+                            <p>' + coatings + u'</p>\
+                        </td>\
+                        <td>\
+                            <p><img style="width: 50px; float: left; margin-right: 8px;" src="http://aluminiumcomposite.ru/static/media/' + composite['texture'].image.name.decode('utf8') + u'"> ' + composite['texture'].name.decode('utf8') + u'</p>\
+                        </td>\
+                        <td>\
+                            <p>' + str(composite['square']).decode('utf8') + u' (' + str(item.square).decode('utf8') + u') [' + str(ceil(square / sheet_square)).decode('utf-8') + u' листов]</p>\
+                        </td>\
+                        <td>\
+                            <p>' + str(price).decode('utf8') + u'</p>\
+                        </td>\
+                        <td>\
+                            <p>' + str(composite['total']).decode('utf8') + u'</p>\
+                        </td>\
+                    </tr>'
 
-                gradations = []
-                if sheet_type.price_huge:
-                    gradations = [500, 1000, 3000]
-                else:
-                    gradations = [100, 500, 1000]
+            text += u'<tr><td colspan="4"></td><td>Итого:</td><td>' + str(total).decode('utf8') + u' руб.</td><tbody></table><br>'
 
-                if square < gradations[0]:
-                    price += sheet_type.price_low
-                elif gradations[0] <= square < gradations[1]:
-                    price += sheet_type.price_middle
-                elif gradations[1] <= square < gradations[2]:
-                    price += sheet_type.price_high
-                else:
-                    price += sheet_type.price_huge
+            if u'services[]' in request.POST and len(request.POST.getlist(u'services[]')) > 0:
+                print request.POST.getlist(u'services[]')
+                text += u'<br><b>Услуги:</b><br>'
+                for service_id in request.POST.getlist(u'services[]'):
+                    try:
+                        service = Service.objects.get(id=int(service_id))
+                        text += u'&nbsp;&nbsp;&nbsp;&nbsp;' + service.name + u'<br>'
+                    except:
+                        pass
 
-                composite['price'] = price
-                composite['total'] = float(u"{0:.2f}".format((Decimal(square) * price)))
-                total += composite['total']
-                composite['texture'] = Texture.objects.get(id=item.texture)
-                composite['coatings'] = coatings
-                composite['sheet_type'] = sheet_type
-                composite['square'] = square
-
-                text += u'<tr>\
-                    <td>\
-                        <p>' + str(sheet_type).decode('utf8') + u'</p>\
-                    </td>\
-                    <td>\
-                        <p>' + coatings + u'</p>\
-                    </td>\
-                    <td>\
-                        <p><img style="width: 50px; float: left; margin-right: 8px;" src="http://aluminiumcomposite.ru/static/media/' + composite['texture'].image.name.decode('utf8') + u'"> ' + composite['texture'].name.decode('utf8') + u'</p>\
-                    </td>\
-                    <td>\
-                        <p>' + str(composite['square']).decode('utf8') + u' (' + str(item.square).decode('utf8') + u') [' + str(ceil(square / sheet_square)).decode('utf-8') + u' листов]</p>\
-                    </td>\
-                    <td>\
-                        <p>' + str(price).decode('utf8') + u'</p>\
-                    </td>\
-                    <td>\
-                        <p>' + str(composite['total']).decode('utf8') + u'</p>\
-                    </td>\
-                </tr>'
-
-        text += u'<tr><td colspan="4"></td><td>Итого:</td><td>' + str(total).decode('utf8') + u' руб.</td><tbody></table><br>'
-
-        if u'services[]' in request.POST and len(request.POST.getlist(u'services[]')) > 0:
-            print request.POST.getlist(u'services[]')
-            text += u'<br><b>Услуги:</b><br>'
-            for service_id in request.POST.getlist(u'services[]'):
-                try:
-                    service = Service.objects.get(id=int(service_id))
-                    text += u'&nbsp;&nbsp;&nbsp;&nbsp;' + service.name + u'<br>'
-                except:
-                    pass
-
-        msg = EmailMessage(u'Заказ', text, 'mailer@live-to-create.com',
-                               ['info@okay-agency.ru'])
-        msg.content_subtype = "html"
-        if msg.send() > 0:
-            cart.clear()
-            return JsonResponse({})
-        else:
-            raise Exception
-        # except:
-        #     return JsonResponse({'err': True})
+            msg = EmailMessage(u'Заказ', text, 'mailer@live-to-create.com',
+                                   ['info@okay-agency.ru'])
+            msg.content_subtype = "html"
+            if msg.send() > 0:
+                cart.clear()
+                return JsonResponse({})
+            else:
+                raise Exception
+        except:
+             return JsonResponse({'err': True})
     else:
         return redirect('/')
 
