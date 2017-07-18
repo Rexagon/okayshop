@@ -139,11 +139,7 @@ def checkout(request):
             cases = [2, 0, 1, 1, 1, 2]
             sheet = titles[2 if 4 < sheet_count % 100 < 20 else cases[sheet_count % 10 if sheet_count % 10 < 5 else 5]]
 
-            gradations = []
-            if sheet_type.price_huge:
-                gradations = [500, 1000, 3000]
-            else:
-                gradations = [100, 500, 1000]
+            gradations = [100, 500, 1000, 3000]
 
             if square < gradations[0]:
                 price += sheet_type.price_low
@@ -285,11 +281,7 @@ def handle_checkout(request):
 
                     square = sheet_square * ceil(square / sheet_square)
 
-                    gradations = []
-                    if sheet_type.price_huge:
-                        gradations = [500, 1000, 3000]
-                    else:
-                        gradations = [100, 500, 1000]
+                    gradations = [100, 500, 1000, 3000]
 
                     if square < gradations[0]:
                         price += sheet_type.price_low
@@ -350,7 +342,7 @@ def handle_checkout(request):
             else:
                 raise Exception
         except:
-             return JsonResponse({'err': True})
+            return JsonResponse({'err': True})
     else:
         return redirect('/')
 
