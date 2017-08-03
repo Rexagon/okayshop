@@ -278,7 +278,7 @@ body {
 .navbar {
     min-height: inherit;
     border: 0;
-    background-color: #f3f3f3;
+    background-color: #eaeaea;
 }
 
 .navbar .navbar-nav > li > a {
