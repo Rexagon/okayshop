@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from market.views import main, products, services, delivery, checkout, contacts, order, message, handle_order, \
-    handle_order_remove, handle_checkout
+    handle_order_remove, handle_checkout, sslcheck
 
 urlpatterns = [
     url(r'^$', main, name="main"),
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^checkout/?$', checkout, name="checkout"),
     url(r'^checkout/order/?$', handle_checkout, name="handle_checkout"),
     url(r'^contacts/?$', contacts, name="contacts"),
+    url(r'.well-known/acme-challenge/igbwKRu6c1QpVIImefaTHUpwscZzFuhC4rSs1p2CjF0', sslcheck),
 
     #stuff urls
     url(r'^message/?$', message)

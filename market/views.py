@@ -3,6 +3,7 @@ import json
 from decimal import Decimal
 
 from django.core.mail import EmailMessage
+from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.html import escape
@@ -181,6 +182,10 @@ def contacts(request):
         "page": "contacts"
     }
     return render(request, 'contacts.html', context=context)
+
+
+def sslcheck(request):
+    return HttpResponse("igbwKRu6c1QpVIImefaTHUpwscZzFuhC4rSs1p2CjF0.auw5MdzkU9BYKEBA5EBRonMt0J16jAXtDymrd9lZsmY")
 
 
 # stuff functions
